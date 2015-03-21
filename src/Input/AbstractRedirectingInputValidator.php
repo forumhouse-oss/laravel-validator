@@ -55,7 +55,7 @@ class AbstractRedirectingInputValidator extends AbstractInputValidator
      * @return \Illuminate\Http\RedirectResponse
      * @throws Exception
      */
-    public function getRedirect()
+    protected function getRedirect()
     {
         $currentRouteMethod = $this->currentRouteMethod();
 
