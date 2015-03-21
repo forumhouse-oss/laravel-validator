@@ -95,7 +95,7 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
     public function assertIsValid($object)
     {
         if (null === $this->validationPassed) {
-            $this->validationPassed = $this->validate($object);
+            $this->validationPassed = $this->isThisValid($object);
         }
 
         if (!$this->validationPassed) {
@@ -110,7 +110,7 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
      *
      * @return bool
      */
-    public function validate($object = null)
+    public function isThisValid($object = null)
     {
         $objectData = $this->getObjectData($object);
         $validationGroup = $this->getValidationGroup($object);
@@ -245,7 +245,7 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
 
     public function __invoke($object)
     {
-        return $this->validate($object);
+        return $this->isThisValid($object);
     }
 
     public function __toString()

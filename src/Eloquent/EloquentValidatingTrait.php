@@ -39,7 +39,7 @@ trait EloquentValidatingTrait
     {
         $validator = static::createValidator();
 
-        return $validator->validate($this);
+        return $validator->isThisValid($this);
     }
 
     public static function assertIsValid(Model $model)

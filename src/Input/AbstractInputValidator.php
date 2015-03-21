@@ -1,6 +1,6 @@
 <?php
 
-namespace FHTeam\LaravelValidator\HttpMiddleware;
+namespace FHTeam\LaravelValidator\Input;
 
 use ArrayAccess;
 use FHTeam\LaravelValidator\AbstractValidator;
@@ -47,7 +47,7 @@ class AbstractInputValidator extends AbstractValidator implements ArrayAccess, I
     const VALIDATE_LARAVEL_SESSION = 32;
 
     /**
-     * A bitmask of data to validate
+     * A bit mask of data to validate
      *
      * @var int
      */

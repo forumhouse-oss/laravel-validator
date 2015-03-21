@@ -1,26 +1,24 @@
-<?php namespace FHTeam\LaravelValidator\Middleware;
+<?php
 
-use Closure;
+namespace FHTeam\LaravelValidator\Input;
+
 use Exception;
-use FHTeam\LaravelValidator\HttpMiddleware\AbstractInputValidator;
-use Illuminate\Contracts\Routing\Middleware;
 use Illuminate\Contracts\Validation\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Routing\Router;
 
 /**
- * Class FrontendControllerValidatorMiddleware
+ * Class AbstractRedirectingInputValidator
  *
- * @package FHTeam\LaravelValidator\Middleware
+ * @package FHTeam\LaravelValidator\Input
  */
-class FrontendControllerValidatorMiddleware extends AbstractInputValidator implements Middleware
+class AbstractRedirectingInputValidator extends AbstractInputValidator
 {
     /**
      * @var Redirector Laravel redirector instance
      */
     protected $redirector;
-
     /**
      * @var array Array of redirect rules on error
      * Example:
@@ -40,24 +38,6 @@ class FrontendControllerValidatorMiddleware extends AbstractInputValidator imple
     protected $errorRedirects = [];
 
     /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Closure                 $next
-     *
-     * @return mixed
-     */
-    public function handle($request, Closure $next)
-    {
-        $valid = $this->validate();
-        if (!$valid) {
-            return $this->getRedirect();
-        }
-
-        return null;
-    }
-
-    /**
      * @param Factory    $validatorFactory
      * @param Request    $request
      * @param Router     $router
@@ -68,7 +48,6 @@ class FrontendControllerValidatorMiddleware extends AbstractInputValidator imple
         parent::__construct($validatorFactory, $request, $router);
         $this->redirector = $redirector;
     }
-
 
     /**
      * Returns a redirect object to be used to redirect user browser on errors

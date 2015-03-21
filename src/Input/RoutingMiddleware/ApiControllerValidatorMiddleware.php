@@ -1,7 +1,7 @@
-<?php namespace HttpMiddleware;
+<?php namespace FHTeam\LaravelValidator\Input\RoutingMiddleware;
 
 use Closure;
-use FHTeam\LaravelValidator\HttpMiddleware\AbstractInputValidator;
+use FHTeam\LaravelValidator\Input\AbstractInputValidator;
 use Illuminate\Contracts\Routing\Middleware;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\Validation\Factory;
@@ -52,7 +52,7 @@ class ApiControllerValidatorMiddleware extends AbstractInputValidator implements
      */
     public function handle($request, Closure $next)
     {
-        $valid = $this->validate();
+        $valid = $this->isThisValid();
         if (!$valid) {
             $result = $this->makeResponse($this->getFailedRules());
 
