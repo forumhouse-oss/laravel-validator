@@ -1,4 +1,4 @@
-<?php namespace FHTeam\LaravelValidator\Rule;
+<?php namespace FHTeam\LaravelValidator\ValidationRule;
 
 use FHTeam\LaravelValidator\ValidationRuleInterface;
 
@@ -9,6 +9,16 @@ use FHTeam\LaravelValidator\ValidationRuleInterface;
  */
 abstract class AbstractValidationRule implements ValidationRuleInterface
 {
+    /**
+     * Empty replace rule to ease rule implementation
+     *
+     * @param string $message
+     * @param string $attribute
+     * @param string $rule
+     * @param array  $parameters
+     *
+     * @return string
+     */
     public function replace($message, $attribute, $rule, array $parameters = [])
     {
         return $message;

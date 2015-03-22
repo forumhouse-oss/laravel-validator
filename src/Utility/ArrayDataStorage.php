@@ -295,6 +295,25 @@ class ArrayDataStorage implements ArrayAccess, IteratorAggregate
     }
 
     /**
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function __get($name)
+    {
+        return $this->getItem($name);
+    }
+
+    /**
+     * @param string $name
+     * @param mixed  $value
+     */
+    public function __set($name, $value)
+    {
+        $this->setItem($name, $value);
+    }
+
+    /**
      * Tests if all the given keys are present in the result
      *
      * @param array $keys

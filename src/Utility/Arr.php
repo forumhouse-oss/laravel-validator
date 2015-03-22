@@ -31,7 +31,7 @@ class Arr extends \Illuminate\Support\Arr
      *      ['*'] =>
      *          ['field1' => 'ruleData1',
      *           'field2' => 'ruleData2', ], //Global rules
-     *      ['condition1', 'condition2'] =>
+     *      ['condition1, condition2'] =>
      *          ['field1' => 'ruleData1',
      *           'field2' => 'ruleData2', ] //Conditional ones
      * All the data matching conditions is merged upon returning

@@ -104,7 +104,7 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
     }
 
     /**
-     * Internal validation function to validate already serialized data. Data keys are camelised before validation
+     * Internal validation function to validate already serialized data.
      *
      * @param mixed $object Object to validate
      *
@@ -162,12 +162,25 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
      */
     public function preProcessRules(array $rules, array $data)
     {
+        // Making template replacements
         foreach ($rules as $key => $text) {
-            $rules[$key] = str_replace(
-                array_keys($this->templateReplacements),
-                array_values($this->templateReplacements),
-                $text
+            $rulesArray = explode(
+                '|',
+                str_replace(
+                    array_keys($this->templateReplacements),
+                    array_values($this->templateReplacements),
+                    $text
+                )
             );
+
+            foreach ($rulesArray as $ruleData) {
+                if ('#' !== $ruleData[0]) {
+                    continue;
+                    //TODO: extract converters and unset them
+                }
+            }
+
+            $rules[$key] = $rulesArray;
         }
 
         return $rules;
@@ -220,6 +233,7 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
 
     public function offsetGet($offset)
     {
+        //TODO: apply converter
         return $this->dataStorage->offsetGet($offset);
     }
 
@@ -241,6 +255,17 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
     public function __unset($name)
     {
         $this->dataStorage->__unset($name);
+    }
+
+    public function __get($name)
+    {
+        //TODO: apply converter
+        return $this->dataStorage->__get($name);
+    }
+
+    public function __set($name, $value)
+    {
+        $this->dataStorage->__set($name, $value);
     }
 
     public function __invoke($object)

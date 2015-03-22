@@ -1,4 +1,4 @@
-<?php namespace FHTeam\LaravelValidator\Rule;
+<?php namespace FHTeam\LaravelValidator\ValidationRule;
 
 use Exception;
 use FHTeam\LaravelValidator\ValidationRuleInterface;
