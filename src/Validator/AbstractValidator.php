@@ -3,6 +3,7 @@
 namespace FHTeam\LaravelValidator\Validator;
 
 use ArrayAccess;
+use BadMethodCallException;
 use Exception;
 use FHTeam\LaravelValidator\Utility\Arr;
 use FHTeam\LaravelValidator\Utility\ArrayDataStorage;
@@ -15,6 +16,7 @@ use IteratorAggregate;
  * Abstract class containing logic common for all validators
  *
  * @package FHTeam\LaravelValidator
+ * @mixin ArrayDataStorage
  */
 abstract class AbstractValidator implements MessageProvider, ArrayAccess, IteratorAggregate
 {
@@ -318,6 +320,10 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
     public function __call($name, $params)
     {
         $this->assertValidationPassed();
+
+        if (!method_exists($this->dataStorage, $name)) {
+            throw new BadMethodCallException("There is no method '$name' on validator or its data storage");
+        }
 
         return call_user_func_array([$this->dataStorage, $name], $params);
     }
