@@ -1,6 +1,6 @@
 <?php
 
-namespace FHTeam\LaravelValidator\Test\Input;
+namespace FHTeam\LaravelValidator\Test\Validator\Input;
 
 use FHTeam\LaravelValidator\Test\TestBase;
 use Illuminate\Contracts\Validation\Factory;

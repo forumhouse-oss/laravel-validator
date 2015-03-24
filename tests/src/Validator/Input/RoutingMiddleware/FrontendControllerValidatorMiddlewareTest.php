@@ -1,25 +1,24 @@
-<?php namespace FHTeam\LaravelValidator\Test\Input\RoutingMiddleware;
+<?php namespace FHTeam\LaravelValidator\Test\Validator\Input\RoutingMiddleware;
 
-use FHTeam\LaravelValidator\Test\Fixture\Input\ApiControllerValidatorMiddlewareFixture;
-use FHTeam\LaravelValidator\Test\Input\InputValidatorTestBase;
-use FHTeam\LaravelValidator\Validator\Input\RoutingMiddleware\ApiControllerValidatorMiddleware;
+use FHTeam\LaravelValidator\Test\Fixture\Input\FrontendControllerValidatorMiddlewareFixture;
+use FHTeam\LaravelValidator\Test\Validator\Input\InputValidatorTestBase;
+use FHTeam\LaravelValidator\Validator\Input\RoutingMiddleware\FrontendControllerValidatorMiddleware;
 use Illuminate\Contracts\Routing\Middleware;
-use Illuminate\Contracts\Routing\ResponseFactory;
-use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Class FrontendControllerValidatorMiddlewareTest
  *
  * @package FHTeam\LaravelValidator\Test\Input\RoutingMiddleware
  */
-class ApiControllerValidatorMiddlewareTest extends InputValidatorTestBase
+class FrontendControllerValidatorMiddlewareTest extends InputValidatorTestBase
 {
     public function testInstanceOf()
     {
         $this->setRequestData(['int' => 5]);
         $instance = $this->createControllerValidator();
         $this->assertInstanceOf(Middleware::class, $instance);
-        $this->assertInstanceOf(ApiControllerValidatorMiddleware::class, $instance);
+        $this->assertInstanceOf(FrontendControllerValidatorMiddleware::class, $instance);
     }
 
     public function testValidateOk()
@@ -41,7 +40,7 @@ class ApiControllerValidatorMiddlewareTest extends InputValidatorTestBase
         $this->setRequestData(['int' => -1]);
         $instance = $this->createControllerValidator();
 
-        /** @var JsonResponse $result */
+        /** @var RedirectResponse $result */
         $result = $instance->handle(
             $this->request,
             function ($value) {
@@ -49,10 +48,7 @@ class ApiControllerValidatorMiddlewareTest extends InputValidatorTestBase
             }
         );
 
-        $this->assertInstanceOf(JsonResponse::class, $result);
-
-        $expected = '{"validationErrors":{"int":{"Min":["1"]}}}';
-        $this->assertEquals($expected, $result->getContent());
+        $this->assertInstanceOf(RedirectResponse::class, $result);
     }
 
     /**
@@ -61,12 +57,12 @@ class ApiControllerValidatorMiddlewareTest extends InputValidatorTestBase
     protected function createControllerValidator()
     {
         return $this->app->make(
-            ApiControllerValidatorMiddlewareFixture::class,
+            FrontendControllerValidatorMiddlewareFixture::class,
             [
                 $this->validatorFactory,
                 $this->request,
                 $this->router,
-                $this->app->make(ResponseFactory::class)
+                $this->redirector
             ]
         );
     }

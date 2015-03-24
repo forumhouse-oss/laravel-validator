@@ -1,7 +1,7 @@
-<?php namespace FHTeam\LaravelValidator\Test\Input\ValidatesWhenResolved;
+<?php namespace FHTeam\LaravelValidator\Test\Validator\Input\ValidatesWhenResolved;
 
 use FHTeam\LaravelValidator\Test\Fixture\Input\FrontendControllerValidatorWhenResolvedFixture;
-use FHTeam\LaravelValidator\Test\Input\InputValidatorTestBase;
+use FHTeam\LaravelValidator\Test\Validator\Input\InputValidatorTestBase;
 use FHTeam\LaravelValidator\Validator\Input\ValidatesWhenResolved\FrontendControllerValidatorWhenResolved;
 use Illuminate\Http\Exception\HttpResponseException;
 
