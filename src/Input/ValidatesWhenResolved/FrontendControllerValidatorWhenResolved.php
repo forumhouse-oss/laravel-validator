@@ -1,4 +1,4 @@
-<?php namespace FHTeam\LaravelValidator\Input\RoutingMiddleware;
+<?php namespace FHTeam\LaravelValidator\Input\ValidatesWhenResolved;
 
 use FHTeam\LaravelValidator\Input\AbstractRedirectingInputValidator;
 use Illuminate\Contracts\Validation\Factory;

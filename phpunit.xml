@@ -25,7 +25,6 @@
             <exclude>
                 <directory>./vendor</directory>
                 <directory>./tests</directory>
-                <directory>./src/ServiceProvider</directory>
             </exclude>
         </whitelist>
     </filter>

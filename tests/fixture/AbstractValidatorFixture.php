@@ -12,7 +12,7 @@ use Illuminate\Contracts\Validation\Validator;
  * @mixin ArrayDataStorage
  * @package FHTeam\LaravelValidator\Test\Fixture
  */
-class AbstractValidatorConcrete extends AbstractValidator
+class AbstractValidatorFixture extends AbstractValidator
 {
     protected $rules = [
         'unused' => ['dummy' => 'required'],

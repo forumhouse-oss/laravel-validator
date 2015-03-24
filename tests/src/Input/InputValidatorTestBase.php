@@ -1,0 +1,78 @@
+<?php
+
+namespace FHTeam\LaravelValidator\Test\Input;
+
+use FHTeam\LaravelValidator\Test\TestBase;
+use Illuminate\Contracts\Validation\Factory;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
+use Illuminate\Routing\Router;
+use PHPUnit_Framework_MockObject_MockObject;
+
+/**
+ * Class ValidatesWhenResolvedTestBase
+ *
+ * @package FHTeam\LaravelValidator\Test\Input\ValidatesWhenResolved
+ */
+class InputValidatorTestBase extends TestBase
+{
+    /**
+     * @var PHPUnit_Framework_MockObject_MockObject|Request
+     */
+    protected $request;
+
+    /**
+     * @var PHPUnit_Framework_MockObject_MockObject|Router
+     */
+    protected $router;
+
+    /**
+     * @var Factory
+     */
+    protected $validatorFactory;
+
+    /**
+     * @var PHPUnit_Framework_MockObject_MockObject|Redirector
+     */
+    protected $redirector;
+
+    /**
+     * @var PHPUnit_Framework_MockObject_MockObject|RedirectResponse
+     */
+    protected $redirectResponse;
+
+    /**
+     * @param array $data
+     */
+    public function setRequestData(array $data)
+    {
+        $this->request->expects($this->any())->method('all')->willReturn($data);
+    }
+
+    /**
+     *
+     */
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->request = $this->getMockBuilder(Request::class)->getMock();
+
+        $this->router = $this->getMockBuilder(Router::class)->disableOriginalConstructor()->getMock();
+        $this->router->expects($this->any())->method('currentRouteAction')->willReturn('Controller@group');
+
+        $this->redirectResponse = $this->getMockBuilder(
+            RedirectResponse::class
+        )->disableOriginalConstructor()->getMock();
+
+        $this->redirectResponse->expects($this->any())->method('withInput')->willReturnSelf();
+
+        $this->redirector = $this->getMockBuilder(Redirector::class)->disableOriginalConstructor()->getMock();
+        $this->redirector->expects($this->any())->method('route')->willReturn($this->redirectResponse);
+        $this->redirector->expects($this->any())->method('action')->willReturn($this->redirectResponse);
+        $this->redirector->expects($this->any())->method('withInput')->willReturnSelf();
+
+        $this->validatorFactory = $this->app->make(Factory::class);
+    }
+}

@@ -3,7 +3,7 @@
 namespace FHTeam\LaravelValidator\Test;
 
 use Exception;
-use FHTeam\LaravelValidator\Test\Fixture\AbstractValidatorConcrete;
+use FHTeam\LaravelValidator\Test\Fixture\AbstractValidatorFixture;
 use FHTeam\LaravelValidator\ValidationException;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Validation\Factory;
@@ -16,7 +16,7 @@ use Illuminate\Contracts\Validation\Factory;
 class AbstractValidatorTest extends TestBase
 {
     /**
-     * @var AbstractValidatorConcrete
+     * @var AbstractValidatorFixture
      */
     protected $validator;
 
@@ -42,7 +42,7 @@ class AbstractValidatorTest extends TestBase
     public function setUp()
     {
         parent::setUp();
-        $this->validator = new AbstractValidatorConcrete(
+        $this->validator = new AbstractValidatorFixture(
             Container::getInstance()->make(Factory::class)
         );
     }

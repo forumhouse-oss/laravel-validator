@@ -15,7 +15,7 @@ trait EloquentValidatingTrait
     /**
      * @var bool If this model should be automatically validated on save. Exception will be thrown on any error
      */
-    public static $validateBeforeSaved = true;
+    public static $validateBeforeSaving = true;
 
     /**
      * @var string Returns a class name suffix for a model validator. By default validator for model Acme\MyModel is
@@ -44,7 +44,7 @@ trait EloquentValidatingTrait
 
     public static function assertIsValid(Model $model)
     {
-        if (!static::$validateBeforeSaved) {
+        if (!static::$validateBeforeSaving) {
             return;
         }
 
