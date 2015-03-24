@@ -7,10 +7,10 @@ use BadMethodCallException;
 use Exception;
 use FHTeam\LaravelValidator\Utility\Arr;
 use FHTeam\LaravelValidator\Utility\ArrayDataStorage;
-use Illuminate\Contracts\Support\MessageBag;
 use Illuminate\Contracts\Support\MessageProvider;
 use Illuminate\Contracts\Validation\Factory;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Support\MessageBag;
 use IteratorAggregate;
 
 /**
@@ -138,7 +138,7 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
         if ($this->validationPassed) {
             $this->dataStorage = new ArrayDataStorage($this->keyCase);
             $this->dataStorage->setItems($objectData);
-            $this->failedMessages = [];
+            $this->failedMessages = new MessageBag();
             $this->failedRules = [];
         } else {
             $this->failedMessages = $validator->getMessageBag();
@@ -230,7 +230,7 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
     /**
      * Returns text version about what failed
      *
-     * @return array
+     * @return MessageBag
      */
     public function getMessageBag()
     {
