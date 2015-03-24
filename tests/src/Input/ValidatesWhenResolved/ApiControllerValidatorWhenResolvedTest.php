@@ -1,8 +1,8 @@
 <?php namespace FHTeam\LaravelValidator\Test\Input\ValidatesWhenResolved;
 
-use FHTeam\LaravelValidator\Input\ValidatesWhenResolved\ApiControllerValidatorWhenResolved;
 use FHTeam\LaravelValidator\Test\Fixture\Input\ApiControllerValidatorWhenResolvedFixture;
 use FHTeam\LaravelValidator\Test\Input\InputValidatorTestBase;
+use FHTeam\LaravelValidator\Validator\Input\ValidatesWhenResolved\ApiControllerValidatorWhenResolved;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Exception\HttpResponseException;
 

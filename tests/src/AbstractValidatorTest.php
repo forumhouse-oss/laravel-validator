@@ -4,7 +4,7 @@ namespace FHTeam\LaravelValidator\Test;
 
 use Exception;
 use FHTeam\LaravelValidator\Test\Fixture\AbstractValidatorFixture;
-use FHTeam\LaravelValidator\ValidationException;
+use FHTeam\LaravelValidator\Validator\ValidationException;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Validation\Factory;
 

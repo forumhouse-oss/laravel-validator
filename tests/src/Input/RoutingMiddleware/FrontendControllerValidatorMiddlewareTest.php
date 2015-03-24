@@ -1,8 +1,8 @@
 <?php namespace FHTeam\LaravelValidator\Test\Input\RoutingMiddleware;
 
-use FHTeam\LaravelValidator\Input\RoutingMiddleware\FrontendControllerValidatorMiddleware;
 use FHTeam\LaravelValidator\Test\Fixture\Input\FrontendControllerValidatorMiddlewareFixture;
 use FHTeam\LaravelValidator\Test\Input\InputValidatorTestBase;
+use FHTeam\LaravelValidator\Validator\Input\RoutingMiddleware\FrontendControllerValidatorMiddleware;
 use Illuminate\Contracts\Routing\Middleware;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 

@@ -2,8 +2,8 @@
 
 namespace FHTeam\LaravelValidator\Test\Input;
 
-use FHTeam\LaravelValidator\Input\AbstractInputValidator;
 use FHTeam\LaravelValidator\Test\TestBase;
+use FHTeam\LaravelValidator\Validator\Input\AbstractInputValidator;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Validation\Factory;
 use Illuminate\Http\Request;
@@ -17,15 +17,19 @@ use PHPUnit_Framework_MockObject_MockObject;
  */
 class AbstractInputValidatorTest extends TestBase
 {
-    /**
-     * @var AbstractInputValidator
-     */
-    protected $validator;
-
     protected $dataInput = ['inputKey1' => 'inputValue1', 'inputKey2' => 'inputValue2'];
 
     protected $dataHeader = ['headerKey1' => 'headerValue1', 'headerKey2' => 'headerValue2'];
 
+    /**
+     * @var PHPUnit_Framework_MockObject_MockObject|Request
+     */
+    protected $request;
+
+    /**
+     * @var PHPUnit_Framework_MockObject_MockObject|Router
+     */
+    protected $router;
 
     /**
      *
@@ -34,40 +38,45 @@ class AbstractInputValidatorTest extends TestBase
     {
         parent::setUp();
 
-        /** @var PHPUnit_Framework_MockObject_MockObject|Request $request */
-        $request = $this->getMockBuilder(Request::class)->getMock();
-
-        $request->expects($this->any())->method('all')->willReturn(
-            $this->dataInput
-        );
-
-        $request->expects($this->any())->method('header')->willReturn(
-            $this->dataHeader
-        );
-
-        /** @var PHPUnit_Framework_MockObject_MockObject|Router $router */
-        $router = $this->getMockBuilder(Router::class)->disableOriginalConstructor()->getMock();
-
-        $router->expects($this->any())->method('currentRouteAction')->willReturn('Controller@group');
-
-        $this->validator = new AbstractInputValidator(
-            Container::getInstance()->make(Factory::class),
-            $request,
-            $router
-        );
+        $this->request = $this->getMockBuilder(Request::class)->getMock();
+        $this->request->expects($this->any())->method('all')->willReturn($this->dataInput);
+        $this->request->expects($this->any())->method('header')->willReturn($this->dataHeader);
+        $this->router = $this->getMockBuilder(Router::class)->disableOriginalConstructor()->getMock();
     }
 
     public function testCollectDataInput()
     {
-        $this->validator->setInputTypes(AbstractInputValidator::VALIDATE_INPUT);
-        $this->assertEquals($this->dataInput, $this->validator->collectData());
+        $validator = $this->createValidator();
+        $validator->setInputTypes(AbstractInputValidator::VALIDATE_INPUT);
+        $this->assertEquals($this->dataInput, $validator->collectData());
     }
 
     public function testCollectDataInputAndHeader()
     {
-        $this->validator->setInputTypes(
+        $validator = $this->createValidator();
+        $validator->setInputTypes(
             AbstractInputValidator::VALIDATE_INPUT | AbstractInputValidator::VALIDATE_HEADERS
         );
-        $this->assertEquals($this->dataInput + $this->dataHeader, $this->validator->collectData());
+        $this->assertEquals($this->dataInput + $this->dataHeader, $validator->collectData());
+    }
+
+    /**
+     * @param string $group
+     */
+    protected function setCurrentGroup($group)
+    {
+        $this->router->expects($this->any())->method('currentRouteAction')->willReturn("Controller@$group");
+    }
+
+    /**
+     * @return AbstractInputValidator
+     */
+    protected function createValidator()
+    {
+        return new AbstractInputValidator(
+            Container::getInstance()->make(Factory::class),
+            $this->request,
+            $this->router
+        );
     }
 }

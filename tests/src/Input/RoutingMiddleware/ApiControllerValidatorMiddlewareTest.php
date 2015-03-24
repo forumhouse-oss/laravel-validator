@@ -1,8 +1,8 @@
 <?php namespace FHTeam\LaravelValidator\Test\Input\RoutingMiddleware;
 
-use FHTeam\LaravelValidator\Input\RoutingMiddleware\ApiControllerValidatorMiddleware;
 use FHTeam\LaravelValidator\Test\Fixture\Input\ApiControllerValidatorMiddlewareFixture;
 use FHTeam\LaravelValidator\Test\Input\InputValidatorTestBase;
+use FHTeam\LaravelValidator\Validator\Input\RoutingMiddleware\ApiControllerValidatorMiddleware;
 use Illuminate\Contracts\Routing\Middleware;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;

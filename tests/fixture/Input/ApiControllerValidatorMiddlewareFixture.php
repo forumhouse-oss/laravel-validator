@@ -3,7 +3,7 @@
 namespace FHTeam\LaravelValidator\Test\Fixture\Input;
 
 
-use FHTeam\LaravelValidator\Input\RoutingMiddleware\ApiControllerValidatorMiddleware;
+use FHTeam\LaravelValidator\Validator\Input\RoutingMiddleware\ApiControllerValidatorMiddleware;
 
 class ApiControllerValidatorMiddlewareFixture extends ApiControllerValidatorMiddleware
 {

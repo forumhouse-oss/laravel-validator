@@ -1,6 +1,6 @@
 <?php namespace FHTeam\LaravelValidator\Test\Fixture\Input;
 
-use FHTeam\LaravelValidator\Input\RoutingMiddleware\FrontendControllerValidatorMiddleware;
+use FHTeam\LaravelValidator\Validator\Input\RoutingMiddleware\FrontendControllerValidatorMiddleware;
 
 class FrontendControllerValidatorMiddlewareFixture extends FrontendControllerValidatorMiddleware
 {
