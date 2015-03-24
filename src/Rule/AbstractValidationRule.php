@@ -1,6 +1,4 @@
-<?php namespace FHTeam\LaravelValidator\ValidationRule;
-
-use FHTeam\LaravelValidator\ValidationRuleInterface;
+<?php namespace FHTeam\LaravelValidator\Rule;
 
 /**
  * Class AbstractValidationRule

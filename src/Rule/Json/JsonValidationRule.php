@@ -1,11 +1,13 @@
-<?php namespace FHTeam\LaravelValidator\ValidationRule;
+<?php namespace FHTeam\LaravelValidator\Rule\Json;
 
-use FHTeam\LaravelValidator\ValidationRuleInterface;
+use FHTeam\LaravelValidator\Rule\AbstractValidationRule;
+use FHTeam\LaravelValidator\Rule\ValidationRuleInterface;
 
 /**
  * Validates passed value as JSON
+
  *
- * @package FHTeam\LaravelValidator\Rule
+*@package FHTeam\LaravelValidator\Rule
  */
 class JsonValidationRule extends AbstractValidationRule implements ValidationRuleInterface
 {

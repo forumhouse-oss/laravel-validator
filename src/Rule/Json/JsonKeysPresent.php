@@ -1,7 +1,8 @@
-<?php namespace FHTeam\LaravelValidator\ValidationRule;
+<?php namespace FHTeam\LaravelValidator\Rule\Json;
 
+use FHTeam\LaravelValidator\Rule\AbstractValidationRule;
+use FHTeam\LaravelValidator\Rule\ValidationRuleInterface;
 use FHTeam\LaravelValidator\Utility\Arr;
-use FHTeam\LaravelValidator\ValidationRuleInterface;
 
 /**
  * Validation rule to test if given keys are present in a passed JSON string. Nested values are supported. Just

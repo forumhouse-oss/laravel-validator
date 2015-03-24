@@ -1,6 +1,6 @@
 <?php
 
-namespace FHTeam\LaravelValidator;
+namespace FHTeam\LaravelValidator\Rule;
 
 use Exception;
 use Illuminate\Container\Container;

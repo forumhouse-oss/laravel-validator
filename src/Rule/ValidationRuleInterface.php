@@ -1,4 +1,4 @@
-<?php namespace FHTeam\LaravelValidator;
+<?php namespace FHTeam\LaravelValidator\Rule;
 
 /**
  * Interface to be implemented by all custom validation rules

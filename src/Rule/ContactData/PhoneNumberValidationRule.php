@@ -1,7 +1,8 @@
-<?php namespace FHTeam\LaravelValidator\ValidationRule;
+<?php namespace FHTeam\LaravelValidator\Rule\ContactData;
 
 use Exception;
-use FHTeam\LaravelValidator\ValidationRuleInterface;
+use FHTeam\LaravelValidator\Rule\AbstractValidationRule;
+use FHTeam\LaravelValidator\Rule\ValidationRuleInterface;
 use libphonenumber\PhoneNumberUtil;
 
 /**
