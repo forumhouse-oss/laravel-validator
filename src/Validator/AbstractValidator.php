@@ -131,6 +131,7 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
         $rules = Arr::mergeByCondition($this->rules, $validationGroup);
         $rules = $this->preProcessRules($rules, $objectData);
 
+        /** @var Validator $validator */
         $validator = $this->validatorFactory->make($objectData, $rules);
         $this->setupValidator($validator);
         $this->validationPassed = !$validator->fails();

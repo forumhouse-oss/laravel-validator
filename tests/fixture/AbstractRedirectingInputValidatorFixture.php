@@ -37,14 +37,4 @@ class AbstractRedirectingInputValidatorFixture extends AbstractRedirectingInputV
      * @var string
      */
     protected $currentRouteMethod;
-
-    /**
-     * @param $object
-     *
-     * @return array
-     */
-    protected function getObjectData($object = null)
-    {
-        return $object;
-    }
 }

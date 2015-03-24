@@ -133,10 +133,11 @@ class ArrayDataStorage implements ArrayAccess, IteratorAggregate
      */
     public function setItems(array $data)
     {
+        $this->data = [];
         foreach ($data as $key => $value) {
             $this->setItem($key, $value);
         }
-    }
+    }\FHTeam\LaravelValidator\Utility\ArrayDataStorage::setItems
 
     /**
      * Returns only specified items
