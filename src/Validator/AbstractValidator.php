@@ -218,7 +218,7 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
      *
      * @param Validator $validator
      */
-    public function setupValid\FHTeam\LaravelValidator\Validator\AbstractValidator::setupValidatorator(Validator $validator)
+    public function setupValidator(Validator $validator)
     {
     }
 
