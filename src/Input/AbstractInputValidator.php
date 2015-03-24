@@ -51,7 +51,7 @@ class AbstractInputValidator extends AbstractValidator implements ArrayAccess, I
      *
      * @var int
      */
-    protected $validateData = self::VALIDATE_INPUT;
+    protected $inputTypes = self::VALIDATE_INPUT;
 
     /**
      * @var Request Current HTTP request to fetch data from
@@ -76,6 +76,14 @@ class AbstractInputValidator extends AbstractValidator implements ArrayAccess, I
     }
 
     /**
+     * @param int $inputTypes
+     */
+    public function setInputTypes($inputTypes)
+    {
+        $this->inputTypes = $inputTypes;
+    }
+
+    /**
      * @param $object
      *
      * @return string
@@ -92,34 +100,9 @@ class AbstractInputValidator extends AbstractValidator implements ArrayAccess, I
      */
     protected function getObjectData($object = null)
     {
-        $data = [];
-
-        if ($this->validateData & self::VALIDATE_INPUT) {
-            $data = array_merge($data, $this->request->all());
-        }
-
-        if ($this->validateData & self::VALIDATE_HEADERS) {
-            $data = array_merge($data, $this->request->header());
-        }
-
-        if ($this->validateData & self::VALIDATE_RAW_COOKIES) {
-            $data = array_merge($data, $_COOKIE);
-        }
-
-        if ($this->validateData & self::VALIDATE_LARAVEL_COOKIES) {
-            $data = array_merge($data, $this->request->cookie());
-        }
-
-        if ($this->validateData & self::VALIDATE_RAW_SESSION) {
-            $data = array_merge($data, $_SESSION);
-        }
-
-        if ($this->validateData & self::VALIDATE_LARAVEL_SESSION) {
-            $data = array_merge($data, $this->request->session()->all());
-        }
-
-        return $data;
+        return $this->collectData();
     }
+
 
     /**
      * Returns the current method of current controller
@@ -129,5 +112,39 @@ class AbstractInputValidator extends AbstractValidator implements ArrayAccess, I
     protected function currentRouteMethod()
     {
         return explode('@', $this->router->currentRouteAction())[1];
+    }
+
+    /**
+     * @return array
+     */
+    public function collectData()
+    {
+        $data = [];
+
+        if ($this->inputTypes & self::VALIDATE_INPUT) {
+            $data = array_merge($data, $this->request->all());
+        }
+
+        if ($this->inputTypes & self::VALIDATE_HEADERS) {
+            $data = array_merge($data, $this->request->header());
+        }
+
+        if ($this->inputTypes & self::VALIDATE_RAW_COOKIES) {
+            $data = array_merge($data, $_COOKIE);
+        }
+
+        if ($this->inputTypes & self::VALIDATE_LARAVEL_COOKIES) {
+            $data = array_merge($data, $this->request->cookie());
+        }
+
+        if ($this->inputTypes & self::VALIDATE_RAW_SESSION) {
+            $data = array_merge($data, $_SESSION);
+        }
+
+        if ($this->inputTypes & self::VALIDATE_LARAVEL_SESSION) {
+            $data = array_merge($data, $this->request->session()->all());
+        }
+
+        return $data;
     }
 }

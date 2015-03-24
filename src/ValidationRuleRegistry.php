@@ -2,8 +2,8 @@
 
 namespace FHTeam\LaravelValidator;
 
-use App;
 use Exception;
+use Illuminate\Container\Container;
 use Illuminate\Contracts\Validation\Factory;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Str;
@@ -58,6 +58,6 @@ class ValidationRuleRegistry
             throw new Exception("Rule with name '$ruleName' is not registered");
         }
 
-        return App::make(static::$registry[$ruleName]);
+        return Container::getInstance()->make(static::$registry[$ruleName]);
     }
 }

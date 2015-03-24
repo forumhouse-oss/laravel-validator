@@ -17,14 +17,17 @@ use IteratorAggregate;
 class ArrayDataStorage implements ArrayAccess, IteratorAggregate
 {
     const KEY_CASE_NO_CHANGE = 0;
+
     const KEY_CASE_SNAKE = 1;
+
     const KEY_CASE_STUDLY = 2;
+
     const KEY_CASE_CAMEL = 3;
 
     /**
      * @var array
      */
-    protected $data;
+    protected $data = null;
 
     /**
      * @var callable
@@ -39,26 +42,7 @@ class ArrayDataStorage implements ArrayAccess, IteratorAggregate
      */
     public function __construct($keyCase = self::KEY_CASE_NO_CHANGE)
     {
-        if (is_callable($keyCase)) {
-            $this->keyCaseNormalizer = $keyCase;
-        } else {
-            switch ($keyCase) {
-                case self::KEY_CASE_NO_CHANGE:
-                    $this->keyCaseNormalizer = [$this, 'keyCaseNoChange'];
-                    break;
-                case self::KEY_CASE_SNAKE:
-                    $this->keyCaseNormalizer = [$this, 'keyCaseSnake'];
-                    break;
-                case self::KEY_CASE_STUDLY:
-                    $this->keyCaseNormalizer = [$this, 'keyCaseStudly'];
-                    break;
-                case self::KEY_CASE_CAMEL:
-                    $this->keyCaseNormalizer = [$this, 'keyCaseNoChange'];
-                    break;
-                default:
-                    throw new Exception("Unsupported key case option '$keyCase'");
-            }
-        }
+        $this->setKeyNormalizer($keyCase);
     }
 
     /**
@@ -150,8 +134,7 @@ class ArrayDataStorage implements ArrayAccess, IteratorAggregate
     public function setItems(array $data)
     {
         foreach ($data as $key => $value) {
-            $key = $this->normalizeKey($key);
-            $this->data[$key] = $value;
+            $this->setItem($key, $value);
         }
     }
 
@@ -191,7 +174,7 @@ class ArrayDataStorage implements ArrayAccess, IteratorAggregate
      */
     public function getOnlyValues(array $keys, $respectKeyOrder = false, $requireAllKeys = true)
     {
-        return array_values($this->getOnly($keys, $respectKeyOrder), $requireAllKeys);
+        return array_values($this->getOnly($keys, $respectKeyOrder, $requireAllKeys));
     }
 
     /**
@@ -279,7 +262,9 @@ class ArrayDataStorage implements ArrayAccess, IteratorAggregate
      */
     public function __isset($name)
     {
-        return $this->hasItem($name);
+        $this->assertArrayDataExists();
+
+        return isset($this->data[$name]);
     }
 
     /**
@@ -417,5 +402,38 @@ class ArrayDataStorage implements ArrayAccess, IteratorAggregate
     protected function keyCaseCamel($key)
     {
         return Str::camel($key);
+    }
+
+    /**
+     * @param $keyCase
+     *
+     * @throws Exception
+     */
+    public function setKeyNormalizer($keyCase)
+    {
+        if (null !== $this->data) {
+            throw new Exception("Cannot change key normalizer if data was already filled in");
+        }
+
+        if (is_callable($keyCase)) {
+            $this->keyCaseNormalizer = $keyCase;
+        } else {
+            switch ($keyCase) {
+                case self::KEY_CASE_NO_CHANGE:
+                    $this->keyCaseNormalizer = [$this, 'keyCaseNoChange'];
+                    break;
+                case self::KEY_CASE_SNAKE:
+                    $this->keyCaseNormalizer = [$this, 'keyCaseSnake'];
+                    break;
+                case self::KEY_CASE_STUDLY:
+                    $this->keyCaseNormalizer = [$this, 'keyCaseStudly'];
+                    break;
+                case self::KEY_CASE_CAMEL:
+                    $this->keyCaseNormalizer = [$this, 'keyCaseCamel'];
+                    break;
+                default:
+                    throw new Exception("Unsupported key case option '$keyCase'");
+            }
+        }
     }
 }

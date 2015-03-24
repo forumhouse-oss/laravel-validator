@@ -49,7 +49,7 @@ trait EloquentValidatingTrait
         }
 
         $validator = static::createValidator();
-        $validator->assertIsValid($model);
+        $validator->assertIsObjectValid($model);
     }
 
     /**

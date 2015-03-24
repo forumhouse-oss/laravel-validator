@@ -15,10 +15,16 @@ use Illuminate\Routing\Router;
  */
 class AbstractRedirectingInputValidator extends AbstractInputValidator
 {
+
+    const REDIRECT_TYPE_ROUTE = 'route';
+
+    const REDIRECT_TYPE_ACTION = 'action';
+
     /**
      * @var Redirector Laravel redirector instance
      */
     protected $redirector;
+
     /**
      * @var array Array of redirect rules on error
      * Example:
@@ -50,12 +56,20 @@ class AbstractRedirectingInputValidator extends AbstractInputValidator
     }
 
     /**
+     * @param array $errorRedirects
+     */
+    public function setErrorRedirects($errorRedirects)
+    {
+        $this->errorRedirects = $errorRedirects;
+    }
+
+    /**
      * Returns a redirect object to be used to redirect user browser on errors
      *
      * @return \Illuminate\Http\RedirectResponse
      * @throws Exception
      */
-    protected function getRedirect()
+    public function getRedirect()
     {
         $currentRouteMethod = $this->currentRouteMethod();
 
@@ -65,13 +79,18 @@ class AbstractRedirectingInputValidator extends AbstractInputValidator
 
         $redirectData = $this->errorRedirects[$currentRouteMethod];
 
+        // Redirect type (route, action etc)
         if (isset($redirectData['route'])) {
-            $redirect = $this->getRouteRedirect($redirectData['route']);
+            $redirect = $this->getRedirectResponse(self::REDIRECT_TYPE_ROUTE, $redirectData['route']);
+        } elseif (isset($redirectData['action'])) {
+            $redirect = $this->getRedirectResponse(self::REDIRECT_TYPE_ACTION, $redirectData['action']);
         } else {
             throw new Exception("No redirect data recognized. Supported: route");
         }
 
-        if ((!isset($redirectData['withInput'])) || (isset($redirectData['withInput']) && $redirectData['withInput'])) {
+        if ((!array_key_exists('withInput', $redirectData)) ||
+            (isset($redirectData['withInput']) && $redirectData['withInput'])
+        ) {
             $redirect->withInput();
         }
 
@@ -90,27 +109,31 @@ class AbstractRedirectingInputValidator extends AbstractInputValidator
     }
 
     /**
-     * @param $redirectData
+     * @param string       $redirectType
+     * @param string|array $redirectData
      *
      * @return \Illuminate\Http\RedirectResponse
      * @throws Exception
      */
-    protected function getRouteRedirect($redirectData)
+    protected function getRedirectResponse($redirectType, $redirectData)
     {
+        if (!in_array($redirectType, $this->getValidRedirectTypes())) {
+            throw new Exception("Invalid redirect type '$redirectType'");
+        }
+
         //Determining route data
         if (is_array($redirectData)) {
-
             if (2 !== count($redirectData)) {
-                throw new Exception('When passing route data as array, it should have exactly two values');
+                throw new Exception('When passing action data as array, it should have exactly two values');
             }
 
-            $routeName = $redirectData[0];
+            $actionName = $redirectData[0];
             $routeParams = $this->fillParameters($redirectData[1]);
-            $redirect = $this->redirector->route($routeName, $routeParams);
+            $redirect = $this->redirector->$redirectType($actionName, $routeParams);
 
             return $redirect;
         } else {
-            $redirect = $this->redirector->route($redirectData);
+            $redirect = $this->redirector->$redirectType($redirectData);
 
             return $redirect;
         }
@@ -136,5 +159,13 @@ class AbstractRedirectingInputValidator extends AbstractInputValidator
         }
 
         return $routeParams;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getValidRedirectTypes()
+    {
+        return [self::REDIRECT_TYPE_ACTION, self::REDIRECT_TYPE_ROUTE];
     }
 }

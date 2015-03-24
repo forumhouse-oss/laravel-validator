@@ -18,8 +18,13 @@
   },
   "autoload": {
     "psr-4": {
-      "FHTeam\\LaravelValidator\\": "src/",
-      "FHTeam\\LaravelValidator\\Tests\\": "tests/src"
+      "FHTeam\\LaravelValidator\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "FHTeam\\LaravelValidator\\Test\\": "tests/src",
+      "FHTeam\\LaravelValidator\\Test\\Fixture\\": "tests/fixture"
     }
   }
 }

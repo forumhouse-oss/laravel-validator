@@ -22,7 +22,13 @@ class Arr extends \Illuminate\Support\Arr
      */
     public static function onlyRespectOrder(array $array, $keys)
     {
-        return array_replace(array_flip($keys), static::only($array, $keys));
+        //TODO: optimize
+        $flippedKeys = array_flip($keys);
+
+        $returnPlaceHolder = array_intersect_key($flippedKeys, $array);
+        $array = array_intersect_key($array, $flippedKeys);
+
+        return array_replace($returnPlaceHolder, $array);
     }
 
     /**

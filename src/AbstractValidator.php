@@ -9,7 +9,6 @@ use FHTeam\LaravelValidator\Utility\ArrayDataStorage;
 use Illuminate\Contracts\Support\MessageProvider;
 use Illuminate\Contracts\Validation\Factory;
 use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Support\MessageBag;
 use IteratorAggregate;
 
 /**
@@ -92,7 +91,7 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
      *
      * @throws ValidationException
      */
-    public function assertIsValid($object)
+    public function assertIsObjectValid($object)
     {
         if (null === $this->validationPassed) {
             $this->validationPassed = $this->isThisValid($object);
@@ -100,6 +99,18 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
 
         if (!$this->validationPassed) {
             throw new ValidationException("Passed object supposed to be valid, but it is not", $this);
+        }
+    }
+
+    /**
+     * Validates an object and raises exception, if it is not valid
+     *
+     * @throws ValidationException
+     */
+    public function assertValidationPassed()
+    {
+        if (!$this->validationPassed) {
+            throw new ValidationException("Validation has not passed", $this);
         }
     }
 
@@ -127,7 +138,7 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
             $this->failedMessages = [];
             $this->failedRules = [];
         } else {
-            $this->failedMessages = new MessageBag($validator->getMessageBag()->getMessages());
+            $this->failedMessages = $validator->getMessageBag();
             $this->failedRules = $validator->failed();
             $this->dataStorage = null;
         }
@@ -153,6 +164,14 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
     }
 
     /**
+     * @param array $rules
+     */
+    public function setRules(array $rules)
+    {
+        $this->rules = $rules;
+    }
+
+    /**
      * Method is called to preprocess rules if required. By default it templatize them
      *
      * @param array $rules Rules to preprocess
@@ -164,6 +183,10 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
     {
         // Making template replacements
         foreach ($rules as $key => $text) {
+            if (empty($text)) {
+                continue;
+            }
+
             $rulesArray = explode(
                 '|',
                 str_replace(
@@ -223,48 +246,62 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
 
     public function getIterator()
     {
+        $this->assertValidationPassed();
+
         return $this->dataStorage->getIterator();
     }
 
     public function offsetExists($offset)
     {
+        $this->assertValidationPassed();
+
         return $this->dataStorage->offsetExists($offset);
     }
 
     public function offsetGet($offset)
     {
+        $this->assertValidationPassed();
+
         //TODO: apply converter
         return $this->dataStorage->offsetGet($offset);
     }
 
     public function offsetSet($offset, $value)
     {
+        $this->assertValidationPassed();
         $this->dataStorage->offsetSet($offset, $value);
     }
 
     public function offsetUnset($offset)
     {
+        $this->assertValidationPassed();
         $this->dataStorage->offsetUnset($offset);
     }
 
     public function __isset($name)
     {
+        $this->assertValidationPassed();
+
         return $this->dataStorage->__isset($name);
     }
 
     public function __unset($name)
     {
+        $this->assertValidationPassed();
         $this->dataStorage->__unset($name);
     }
 
     public function __get($name)
     {
+        $this->assertValidationPassed();
+
         //TODO: apply converter
         return $this->dataStorage->__get($name);
     }
 
     public function __set($name, $value)
     {
+        $this->assertValidationPassed();
         $this->dataStorage->__set($name, $value);
     }
 
@@ -278,16 +315,23 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
         return implode("\r\n", $this->failedMessages);
     }
 
+    public function __call($name, $params)
+    {
+        $this->assertValidationPassed();
+
+        return call_user_func_array([$this->dataStorage, $name], $params);
+    }
+
     public function __debugInfo()
     {
         return [
             "validationPassed" => $this->validationPassed,
             "rules" => $this->rules,
-            "dataStorage::getItems()" => $this->dataStorage->getItems(),
+            "dataStorage::getItems()" => $this->dataStorage ? $this->dataStorage->getItems() : '(null)',
             "keyCase" => $this->keyCase,
             "templateReplacements" => $this->templateReplacements,
             "failedMessages" => $this->failedMessages,
             "failedRules" => $this->failedRules,
         ];
-    }
+}
 }
