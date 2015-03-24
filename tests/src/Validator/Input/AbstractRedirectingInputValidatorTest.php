@@ -2,29 +2,47 @@
 
 namespace FHTeam\LaravelValidator\Test\Validator\Input;
 
+use FHTeam\LaravelValidator\Test\TestBase;
 use FHTeam\LaravelValidator\Validator\Input\AbstractInputValidator;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Validation\Factory;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Router;
+use PHPUnit_Framework_MockObject_MockObject;
 
 /**
  * Class AbstractInputValidatorTest
  *
  * @package FHTeam\LaravelValidator\Test\Input
  */
-class AbstractInputValidatorTest extends InputValidatorTestBase
+class AbstractRedirectingInputValidatorTest extends TestBase
 {
     protected $dataInput = ['inputKey1' => 'inputValue1', 'inputKey2' => 'inputValue2'];
 
     protected $dataHeader = ['headerKey1' => 'headerValue1', 'headerKey2' => 'headerValue2'];
 
+    /**
+     * @var PHPUnit_Framework_MockObject_MockObject|Request
+     */
+    protected $request;
+
+    /**
+     * @var PHPUnit_Framework_MockObject_MockObject|Router
+     */
+    protected $router;
+
+    /**
+     *
+     */
     public function setUp()
     {
         parent::setUp();
 
-        $this->setRequestData($this->dataInput);
-        $this->setHeaderData($this->dataHeader);
+        $this->request = $this->getMockBuilder(Request::class)->getMock();
+        $this->request->expects($this->any())->method('all')->willReturn($this->dataInput);
+        $this->request->expects($this->any())->method('header')->willReturn($this->dataHeader);
+        $this->router = $this->getMockBuilder(Router::class)->disableOriginalConstructor()->getMock();
     }
-
 
     public function testCollectDataInput()
     {
@@ -40,6 +58,14 @@ class AbstractInputValidatorTest extends InputValidatorTestBase
             AbstractInputValidator::VALIDATE_INPUT | AbstractInputValidator::VALIDATE_HEADERS
         );
         $this->assertEquals($this->dataInput + $this->dataHeader, $validator->collectData());
+    }
+
+    /**
+     * @param string $group
+     */
+    protected function setCurrentGroup($group)
+    {
+        $this->router->expects($this->any())->method('currentRouteAction')->willReturn("Controller@$group");
     }
 
     /**

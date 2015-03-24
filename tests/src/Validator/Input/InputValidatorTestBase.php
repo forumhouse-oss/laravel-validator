@@ -43,14 +43,6 @@ class InputValidatorTestBase extends TestBase
     protected $redirectResponse;
 
     /**
-     * @param array $data
-     */
-    public function setRequestData(array $data)
-    {
-        $this->request->expects($this->any())->method('all')->willReturn($data);
-    }
-
-    /**
      *
      */
     public function setUp()
@@ -74,5 +66,31 @@ class InputValidatorTestBase extends TestBase
         $this->redirector->expects($this->any())->method('withInput')->willReturnSelf();
 
         $this->validatorFactory = $this->app->make(Factory::class);
+    }
+
+    /**
+     * @param array $data
+     */
+    public function setRequestData(array $data)
+    {
+        $this->request->expects($this->any())->method('all')->willReturn($data);
+    }
+
+    /**
+     * @param array $data
+     */
+    public function setHeaderData(array $data)
+    {
+        $this->request->expects($this->any())->method('header')->willReturn($data);
+    }
+
+    /**
+     * @param string $group
+     */
+    protected function setCurrentGroup($group)
+    {
+        $this->router->expects($this->any())->method('currentRouteAction')->willReturn(
+            "Controller@$group"
+        );
     }
 }
