@@ -9,8 +9,8 @@ use FHTeam\LaravelValidator\Utility\Arr;
 use FHTeam\LaravelValidator\Utility\ArrayDataStorage;
 use Illuminate\Contracts\Support\MessageProvider;
 use Illuminate\Contracts\Validation\Factory;
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Support\MessageBag;
+use Illuminate\Validation\Validator;
 use IteratorAggregate;
 
 /**
@@ -218,7 +218,7 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
      *
      * @param Validator $validator
      */
-    public function setupValidator(Validator $validator)
+    public function setupValid\FHTeam\LaravelValidator\Validator\AbstractValidator::setupValidatorator(Validator $validator)
     {
     }
 
