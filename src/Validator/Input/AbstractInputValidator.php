@@ -1,9 +1,9 @@
 <?php
 
-namespace FHTeam\LaravelValidator\Input;
+namespace FHTeam\LaravelValidator\Validator\Input;
 
 use ArrayAccess;
-use FHTeam\LaravelValidator\AbstractValidator;
+use FHTeam\LaravelValidator\Validator\AbstractValidator;
 use Illuminate\Contracts\Validation\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Router;

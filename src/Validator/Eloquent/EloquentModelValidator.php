@@ -1,6 +1,6 @@
-<?php namespace FHTeam\LaravelValidator\Eloquent;
+<?php namespace FHTeam\LaravelValidator\Validator\Eloquent;
 
-use FHTeam\LaravelValidator\AbstractValidator;
+use FHTeam\LaravelValidator\Validator\AbstractValidator;
 use Illuminate\Database\Eloquent\Model;
 
 /**

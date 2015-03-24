@@ -1,6 +1,6 @@
 <?php
 
-namespace FHTeam\LaravelValidator;
+namespace FHTeam\LaravelValidator\Validator;
 
 use ArrayAccess;
 use Exception;

@@ -1,10 +1,10 @@
-<?php namespace FHTeam\LaravelValidator\Input\RoutingMiddleware;
+<?php namespace FHTeam\LaravelValidator\Validator\Input\ValidatesWhenResolved;
 
-use Closure;
-use FHTeam\LaravelValidator\Input\AbstractInputValidator;
-use Illuminate\Contracts\Routing\Middleware;
+use FHTeam\LaravelValidator\Validator\Input\AbstractInputValidator;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\Validation\Factory;
+use Illuminate\Contracts\Validation\ValidatesWhenResolved;
+use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Arr;
@@ -14,7 +14,7 @@ use Illuminate\Support\Arr;
  *
  * @package Middleware
  */
-class ApiControllerValidatorMiddleware extends AbstractInputValidator implements Middleware
+class ApiControllerValidatorWhenResolved extends AbstractInputValidator implements ValidatesWhenResolved
 {
     /**
      * @var ResponseFactory
@@ -45,18 +45,15 @@ class ApiControllerValidatorMiddleware extends AbstractInputValidator implements
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Closure                 $next
-     *
-     * @return mixed
+     * @return null
+     * @throws HttpResponseException
      */
-    public function handle($request, Closure $next)
+    public function validate()
     {
-        $valid = $this->isThisValid();
-        if (!$valid) {
+        if (!$this->isThisValid()) {
             $result = $this->makeResponse($this->getFailedRules());
 
-            return $this->responseFactory->json($result);
+            throw new HttpResponseException($this->responseFactory->json($result));
         }
 
         return null;

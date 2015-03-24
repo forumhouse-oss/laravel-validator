@@ -1,6 +1,6 @@
-<?php namespace FHTeam\LaravelValidator\Input\ValidatesWhenResolved;
+<?php namespace FHTeam\LaravelValidator\Validator\Input\ValidatesWhenResolved;
 
-use FHTeam\LaravelValidator\Input\AbstractRedirectingInputValidator;
+use FHTeam\LaravelValidator\Validator\Input\AbstractRedirectingInputValidator;
 use Illuminate\Contracts\Validation\Factory;
 use Illuminate\Contracts\Validation\ValidatesWhenResolved;
 use Illuminate\Http\Exception\HttpResponseException;

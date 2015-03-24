@@ -1,7 +1,7 @@
-<?php namespace FHTeam\LaravelValidator\Input\RoutingMiddleware;
+<?php namespace FHTeam\LaravelValidator\Validator\Input\RoutingMiddleware;
 
 use Closure;
-use FHTeam\LaravelValidator\Input\AbstractRedirectingInputValidator;
+use FHTeam\LaravelValidator\Validator\Input\AbstractRedirectingInputValidator;
 use Illuminate\Contracts\Routing\Middleware;
 use Illuminate\Contracts\Validation\Factory;
 use Illuminate\Http\Request;

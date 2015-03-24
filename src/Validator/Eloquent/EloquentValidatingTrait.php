@@ -1,7 +1,7 @@
-<?php namespace Eloquent;
+<?php namespace FHTeam\LaravelValidator\Validator\Eloquent;
 
 use Exception;
-use FHTeam\LaravelValidator\AbstractValidator;
+use FHTeam\LaravelValidator\Validator\AbstractValidator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Application;
 

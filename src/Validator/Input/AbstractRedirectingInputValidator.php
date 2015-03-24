@@ -1,6 +1,6 @@
 <?php
 
-namespace FHTeam\LaravelValidator\Input;
+namespace FHTeam\LaravelValidator\Validator\Input;
 
 use Exception;
 use Illuminate\Contracts\Validation\Factory;
