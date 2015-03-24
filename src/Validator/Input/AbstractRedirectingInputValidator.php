@@ -96,9 +96,9 @@ class AbstractRedirectingInputValidator extends AbstractInputValidator
 
         //Errors and variables
         if (empty($redirectData['formName'])) {
-            $redirect->withErrors($this);
+            $redirect->withErrors($this->getMessageBag());
         } else {
-            $redirect->withErrors($this, $redirectData['formName']);
+            $redirect->withErrors($this->getMessageBag(), $redirectData['formName']);
         }
 
         if (!empty($redirectData['templateVar'])) {

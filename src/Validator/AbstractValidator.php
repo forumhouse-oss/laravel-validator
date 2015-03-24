@@ -7,6 +7,7 @@ use BadMethodCallException;
 use Exception;
 use FHTeam\LaravelValidator\Utility\Arr;
 use FHTeam\LaravelValidator\Utility\ArrayDataStorage;
+use Illuminate\Contracts\Support\MessageBag;
 use Illuminate\Contracts\Support\MessageProvider;
 use Illuminate\Contracts\Validation\Factory;
 use Illuminate\Contracts\Validation\Validator;
