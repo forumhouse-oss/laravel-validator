@@ -2,81 +2,57 @@
 
 namespace FHTeam\LaravelValidator\Test\Validator\Input;
 
-use FHTeam\LaravelValidator\Test\TestBase;
-use FHTeam\LaravelValidator\Validator\Input\AbstractInputValidator;
+use Exception;
+use FHTeam\LaravelValidator\Test\Fixture\AbstractRedirectingInputValidatorFixture;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Validation\Factory;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Router;
-use PHPUnit_Framework_MockObject_MockObject;
+use Illuminate\Http\RedirectResponse;
 
 /**
  * Class AbstractInputValidatorTest
  *
  * @package FHTeam\LaravelValidator\Test\Input
  */
-class AbstractRedirectingInputValidatorTest extends TestBase
+class AbstractRedirectingInputValidatorTest extends InputValidatorTestBase
 {
-    protected $dataInput = ['inputKey1' => 'inputValue1', 'inputKey2' => 'inputValue2'];
-
-    protected $dataHeader = ['headerKey1' => 'headerValue1', 'headerKey2' => 'headerValue2'];
-
-    /**
-     * @var PHPUnit_Framework_MockObject_MockObject|Request
-     */
-    protected $request;
-
-    /**
-     * @var PHPUnit_Framework_MockObject_MockObject|Router
-     */
-    protected $router;
-
     /**
      *
      */
     public function setUp()
     {
         parent::setUp();
-
-        $this->request = $this->getMockBuilder(Request::class)->getMock();
-        $this->request->expects($this->any())->method('all')->willReturn($this->dataInput);
-        $this->request->expects($this->any())->method('header')->willReturn($this->dataHeader);
-        $this->router = $this->getMockBuilder(Router::class)->disableOriginalConstructor()->getMock();
     }
 
-    public function testCollectDataInput()
+    public function testNoGroup()
     {
+        $this->setCurrentGroup('route');
         $validator = $this->createValidator();
-        $validator->setInputTypes(AbstractInputValidator::VALIDATE_INPUT);
-        $this->assertEquals($this->dataInput, $validator->collectData());
+        $this->setExpectedException(Exception::class);
+        $redirect = $validator->getRedirect();
     }
 
-    public function testCollectDataInputAndHeader()
+    public function testGetErrorRedirect()
     {
+        $this->setCurrentGroup('simple_route');
         $validator = $this->createValidator();
-        $validator->setInputTypes(
-            AbstractInputValidator::VALIDATE_INPUT | AbstractInputValidator::VALIDATE_HEADERS
-        );
-        $this->assertEquals($this->dataInput + $this->dataHeader, $validator->collectData());
+        $redirect = $validator->getRedirect();
+        $this->assertInstanceOf(RedirectResponse::class, $redirect);
+        //TODO: this needs further testing
     }
 
     /**
-     * @param string $group
-     */
-    protected function setCurrentGroup($group)
-    {
-        $this->router->expects($this->any())->method('currentRouteAction')->willReturn("Controller@$group");
-    }
-
-    /**
-     * @return AbstractInputValidator
+     * @return AbstractRedirectingInputValidatorFixture
      */
     protected function createValidator()
     {
-        return new AbstractInputValidator(
-            Container::getInstance()->make(Factory::class),
-            $this->request,
-            $this->router
+        return $this->app->make(
+            AbstractRedirectingInputValidatorFixture::class,
+            [
+                Container::getInstance()->make(Factory::class),
+                $this->request,
+                $this->router,
+                $this->redirector,
+            ]
         );
     }
 }

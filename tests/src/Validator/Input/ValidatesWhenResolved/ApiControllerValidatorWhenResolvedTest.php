@@ -13,6 +13,12 @@ use Illuminate\Http\Exception\HttpResponseException;
  */
 class ApiControllerValidatorWhenResolvedTest extends InputValidatorTestBase
 {
+    public function setUp()
+    {
+        parent::setUp();
+        $this->setCurrentGroup('group');
+    }
+
     public function testValidateOk()
     {
         $this->setRequestData(['int' => 5]);

@@ -52,7 +52,6 @@ class InputValidatorTestBase extends TestBase
         $this->request = $this->getMockBuilder(Request::class)->getMock();
 
         $this->router = $this->getMockBuilder(Router::class)->disableOriginalConstructor()->getMock();
-        $this->router->expects($this->any())->method('currentRouteAction')->willReturn('Controller@group');
 
         $this->redirectResponse = $this->getMockBuilder(
             RedirectResponse::class

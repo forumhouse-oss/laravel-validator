@@ -12,6 +12,12 @@ use Illuminate\Http\Exception\HttpResponseException;
  */
 class FrontendControllerValidatorWhenResolvedTest extends InputValidatorTestBase
 {
+    public function setUp()
+    {
+        parent::setUp();
+        $this->setCurrentGroup('group');
+    }
+
     public function testValidateOk()
     {
         $this->setRequestData(['int' => 5]);

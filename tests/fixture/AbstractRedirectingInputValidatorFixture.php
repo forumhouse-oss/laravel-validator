@@ -3,7 +3,7 @@
 namespace FHTeam\LaravelValidator\Test\Fixture;
 
 use FHTeam\LaravelValidator\Utility\ArrayDataStorage;
-use FHTeam\LaravelValidator\Validator\Input\AbstractInputValidator;
+use FHTeam\LaravelValidator\Validator\Input\AbstractRedirectingInputValidator;
 
 /**
  * Class AbstractValidatorConcrete
@@ -11,7 +11,7 @@ use FHTeam\LaravelValidator\Validator\Input\AbstractInputValidator;
  * @mixin ArrayDataStorage
  * @package FHTeam\LaravelValidator\Test\Fixture
  */
-class AbstractRedirectingInputValidatorFixture extends AbstractInputValidator
+class AbstractRedirectingInputValidatorFixture extends AbstractRedirectingInputValidator
 {
     protected $rules = [
         'unused' => ['dummy' => 'required'],
@@ -46,13 +46,5 @@ class AbstractRedirectingInputValidatorFixture extends AbstractInputValidator
     protected function getObjectData($object = null)
     {
         return $object;
-    }
-
-    /**
-     * @param string $currentRouteMethod
-     */
-    public function setCurrentRouteMethod($currentRouteMethod)
-    {
-        $this->currentRouteMethod = $currentRouteMethod;
     }
 }
