@@ -8,6 +8,7 @@ use FHTeam\LaravelValidator\Test\TestBase;
 use FHTeam\LaravelValidator\Validator\ValidationException;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Validation\Factory;
+use Illuminate\Support\MessageBag;
 
 /**
  * Class AbstractValidatorTest
@@ -66,7 +67,7 @@ class AbstractValidatorTest extends TestBase
         $this->validator->isThisValid($this->valid);
         $this->assertEquals('string', $this->validator->getItem('string'));
         $this->assertEquals([], $this->validator->getFailedRules());
-        $this->assertEquals([], $this->validator->getMessageBag());
+        $this->assertEquals(new MessageBag(), $this->validator->getMessageBag());
     }
 
     /**

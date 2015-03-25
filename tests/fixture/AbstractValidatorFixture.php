@@ -4,7 +4,7 @@ namespace FHTeam\LaravelValidator\Test\Fixture;
 
 use FHTeam\LaravelValidator\Utility\ArrayDataStorage;
 use FHTeam\LaravelValidator\Validator\AbstractValidator;
-use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Validation\Validator;
 
 /**
  * Class AbstractValidatorConcrete
