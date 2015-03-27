@@ -78,8 +78,15 @@ class AbstractValidatorTest extends TestBase
         $this->setExpectedException(ValidationException::class);
         $this->validator->isThisValid($this->invalid);
         $this->validator->getItem('string');
-        $this->assertEquals([], $this->validator->getFailedRules());
-        $this->assertEquals([], $this->validator->getMessageBag());
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testDataContainsOnlyValidatedValues()
+    {
+        $this->validator->isThisValid($this->valid + ['should_not_be_there' => 'value']);
+        $this->assertEquals($this->valid, $this->validator->getItems());
     }
 
     /**

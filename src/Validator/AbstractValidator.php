@@ -138,7 +138,7 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
 
         if ($this->validationPassed) {
             $this->dataStorage = new ArrayDataStorage($this->keyCase);
-            $this->dataStorage->setItems(Arr::only($objectData, array_keys('rules')));
+            $this->dataStorage->setItems(Arr::only($objectData, array_keys($rules)));
             $this->failedMessages = new MessageBag();
             $this->failedRules = [];
         } else {
