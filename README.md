@@ -25,7 +25,7 @@ Features:
  
 Documentation
 ------------------------------------
- - Documentation is available [here|https://github.com/fhteam/laravel-validator/wiki]
+ - Documentation is available [here](https://github.com/fhteam/laravel-validator/wiki)
  
 Quick example:
 -----------------------------------
