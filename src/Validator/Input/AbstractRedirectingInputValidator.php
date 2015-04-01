@@ -79,6 +79,10 @@ class AbstractRedirectingInputValidator extends AbstractInputValidator
 
         $redirectData = $this->errorRedirects[$currentRouteMethod];
 
+        if (is_callable($redirectData)) {
+            return $redirectData();
+        }
+
         // Redirect type (route, action etc)
         if (isset($redirectData['route'])) {
             $redirect = $this->getRedirectResponse(self::REDIRECT_TYPE_ROUTE, $redirectData['route']);
