@@ -3,7 +3,6 @@
 namespace FHTeam\LaravelValidator\Validator;
 
 use ArrayAccess;
-use BadMethodCallException;
 use Exception;
 use FHTeam\LaravelValidator\Utility\Arr;
 use FHTeam\LaravelValidator\Utility\ArrayDataStorage;
@@ -319,15 +318,32 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
         return implode("\r\n", $this->failedMessages);
     }
 
-    public function __call($name, $params)
+    /**
+     * Enabling access to getItemOrDefault() via magic methods
+     *
+     * @param string $name
+     * @param array  $params
+     *
+     * @return mixed
+     * @throws Exception
+     */
+    public function __call($name, array $params)
     {
         $this->assertValidationPassed();
 
-        if (!method_exists($this->dataStorage, $name)) {
-            throw new BadMethodCallException("There is no method '$name' on validator or its data storage");
+        if (method_exists($this->dataStorage, $name)) {
+            return call_user_func_array([$this->dataStorage, $name], $params);
         }
 
-        return call_user_func_array([$this->dataStorage, $name], $params);
+        if (count($params) !== 1) {
+            throw new Exception(
+                "You must pass exactly one argument for validator as a default value. You passed: ".json_encode(
+                    $params
+                )
+            );
+        }
+
+        return $this->dataStorage->getItemOrDefault($name, $params[0]);
     }
 
     public function __debugInfo()
@@ -341,5 +357,5 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
             "failedMessages" => $this->failedMessages,
             "failedRules" => $this->failedRules,
         ];
-}
+    }
 }

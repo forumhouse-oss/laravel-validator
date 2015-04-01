@@ -2,14 +2,12 @@
 
 namespace FHTeam\LaravelValidator\Test\Fixture;
 
-use FHTeam\LaravelValidator\Utility\ArrayDataStorage;
 use FHTeam\LaravelValidator\Validator\AbstractValidator;
 use Illuminate\Validation\Validator;
 
 /**
  * Class AbstractValidatorConcrete
  *
- * @mixin ArrayDataStorage
  * @package FHTeam\LaravelValidator\Test\Fixture
  */
 class AbstractValidatorFixture extends AbstractValidator

@@ -73,6 +73,17 @@ class AbstractValidatorTest extends TestBase
     /**
      * @throws Exception
      */
+    public function testGetValueDefault()
+    {
+        $this->validator->isThisValid($this->valid);
+        $this->assertEquals('notExists', $this->validator->getItemOrDefault('notExistsKey', 'notExists'));
+        /** @noinspection PhpUndefinedMethodInspection */
+        $this->assertEquals('notExists', $this->validator->notExistsKey('notExists'));
+    }
+
+    /**
+     * @throws Exception
+     */
     public function testGetValuesOnUnvalidated()
     {
         $this->setExpectedException(ValidationException::class);
