@@ -88,7 +88,7 @@ class AbstractInputValidator extends AbstractValidator implements ArrayAccess, I
      *
      * @return string
      */
-    protected function getValidationGroup($object)
+    protected function getState($object)
     {
         return $this->currentRouteMethod();
     }

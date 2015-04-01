@@ -25,7 +25,7 @@ class AbstractValidatorFixture extends AbstractValidator
      *
      * @return string
      */
-    protected function getValidationGroup($object)
+    protected function getState($object)
     {
         return 'group';
     }

@@ -67,7 +67,7 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
      *
      * @return string
      */
-    abstract protected function getValidationGroup($object);
+    abstract protected function getState($object);
 
     /**
      * @param $object
@@ -126,7 +126,7 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
     public function isThisValid($object = null)
     {
         $objectData = $this->getObjectData($object);
-        $validationGroup = $this->getValidationGroup($object);
+        $validationGroup = $this->getState($object);
         $rules = Arr::mergeByCondition($this->rules, $validationGroup);
         $rules = $this->preProcessRules($rules, $objectData);
 

@@ -25,7 +25,7 @@ abstract class EloquentModelValidator extends AbstractValidator
      *
      * @return null
      */
-    protected function getValidationGroup($object)
+    protected function getState($object)
     {
         return null; //No model state by default
     }
