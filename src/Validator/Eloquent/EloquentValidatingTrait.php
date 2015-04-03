@@ -35,6 +35,12 @@ trait EloquentValidatingTrait
         );
     }
 
+    /**
+     * Method to perform actual validation
+     *
+     * @return bool
+     * @throws Exception
+     */
     public function validate()
     {
         $validator = static::createValidator();
@@ -42,6 +48,14 @@ trait EloquentValidatingTrait
         return $validator->isThisValid($this);
     }
 
+    /**
+     * Method to call before model is saved into database to ensure it is valid
+     *
+     * @param Model $model
+     *
+     * @throws Exception
+     * @throws \FHTeam\LaravelValidator\Validator\ValidationException
+     */
     public static function assertIsValid(Model $model)
     {
         if (!static::$validateBeforeSaving) {
@@ -53,18 +67,31 @@ trait EloquentValidatingTrait
     }
 
     /**
+     * Function creates validator object using IoC calls
+     *
      * @return AbstractValidator
      * @throws Exception
      */
     protected static function createValidator()
     {
-        $modelClass = static::class;
-        $className = $modelClass.static::$validatorClassNameSuffix;
+        $className = self::getValidatorClass();
 
         if (!class_exists($className)) {
-            throw new Exception("Cannot load validator class '$className' for model '$modelClass'");
+            throw new Exception("Cannot load validator class '$className' for model '".static::class."'");
         }
 
         return Application::getInstance()->make($className);
+    }
+
+    /**
+     * Method should return the class of the validator to crete when validating this model
+     *
+     * @return string
+     */
+    protected static function getValidatorClass()
+    {
+        $className = static::class.static::$validatorClassNameSuffix;
+
+        return $className;
     }
 }
