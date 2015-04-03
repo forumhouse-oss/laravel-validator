@@ -2,7 +2,7 @@
 
 use FHTeam\LaravelValidator\Test\Fixture\Input\ApiControllerValidatorWhenResolvedFixture;
 use FHTeam\LaravelValidator\Test\Validator\Input\InputValidatorTestBase;
-use FHTeam\LaravelValidator\Validator\Input\ValidatesWhenResolved\ApiControllerValidatorWhenResolved;
+use FHTeam\LaravelValidator\Validator\Input\WhenResolved\ApiControllerValidatorWhenResolved;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Exception\HttpResponseException;
 

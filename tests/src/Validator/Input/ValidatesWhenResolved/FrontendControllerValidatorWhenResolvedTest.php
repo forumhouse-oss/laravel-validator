@@ -2,7 +2,7 @@
 
 use FHTeam\LaravelValidator\Test\Fixture\Input\FrontendControllerValidatorWhenResolvedFixture;
 use FHTeam\LaravelValidator\Test\Validator\Input\InputValidatorTestBase;
-use FHTeam\LaravelValidator\Validator\Input\ValidatesWhenResolved\FrontendControllerValidatorWhenResolved;
+use FHTeam\LaravelValidator\Validator\Input\WhenResolved\FrontendControllerValidatorWhenResolved;
 use Illuminate\Http\Exception\HttpResponseException;
 
 /**

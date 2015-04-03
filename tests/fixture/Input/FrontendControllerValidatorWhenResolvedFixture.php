@@ -1,6 +1,6 @@
 <?php namespace FHTeam\LaravelValidator\Test\Fixture\Input;
 
-use FHTeam\LaravelValidator\Validator\Input\ValidatesWhenResolved\FrontendControllerValidatorWhenResolved;
+use FHTeam\LaravelValidator\Validator\Input\WhenResolved\FrontendControllerValidatorWhenResolved;
 
 /**
  * Class FrontendControllerValidatorMiddlewareFixture

@@ -3,7 +3,7 @@
 namespace FHTeam\LaravelValidator\Test\Fixture\Input;
 
 
-use FHTeam\LaravelValidator\Validator\Input\ValidatesWhenResolved\ApiControllerValidatorWhenResolved;
+use FHTeam\LaravelValidator\Validator\Input\WhenResolved\ApiControllerValidatorWhenResolved;
 
 class ApiControllerValidatorWhenResolvedFixture extends ApiControllerValidatorWhenResolved
 {
