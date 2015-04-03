@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Validation rule to check if both height and width of the image are between specified bounds.
+ * Rule accepts one mandatory parameter (minimum image dimension) and one optional (maximum image dimension).
+ * Both dimensions are checked against both parameters
  *
  * @package FHTeam\LaravelValidator\Rule
  */

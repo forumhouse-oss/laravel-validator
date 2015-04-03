@@ -5,6 +5,11 @@ use FHTeam\LaravelValidator\Rule\AbstractValidationRule;
 use FHTeam\LaravelValidator\Rule\ValidationRuleInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
+/**
+ * Class ImageRatioValidationRule
+ *
+ * @package FHTeam\LaravelValidator\Rule\Image
+ */
 class ImageRatioValidationRule extends AbstractValidationRule implements ValidationRuleInterface
 {
     public function validate($attribute, $value, array $parameters = [])
