@@ -14,7 +14,7 @@ class ImageRatioValidationRule extends AbstractValidationRule implements Validat
 {
     public function validate($attribute, $value, array $parameters = [])
     {
-        if (count($parameters) < 2) {
+        if (count($parameters) !== 2) {
             throw new Exception("ImageRatioRule requires two parameters to be passed: min and max ratio");
         }
 
