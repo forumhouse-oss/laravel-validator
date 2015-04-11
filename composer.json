@@ -11,7 +11,8 @@
     "squizlabs/php_codesniffer": "1.*",
     "orchestra/testbench": "~3.0",
     "phpunit/phpunit": "4.3.*",
-    "satooshi/php-coveralls": "dev-master"
+    "satooshi/php-coveralls": "dev-master",
+    "giggsey/libphonenumber-for-php": "~7.0"
   },
   "suggest": {
     "giggsey/libphonenumber-for-php": "Allows to validate phone numbers"
