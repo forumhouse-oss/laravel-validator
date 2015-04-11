@@ -1,4 +1,4 @@
-<?php namespace FHTeam\LaravelValidator\Test\Fixture\Input;
+<?php namespace FHTeam\LaravelValidator\Tests\Fixture\Input;
 
 use FHTeam\LaravelValidator\Validator\Input\WhenResolved\FrontendControllerValidatorWhenResolved;
 

@@ -1,11 +1,11 @@
 <?php
 
 
-namespace FHTeam\LaravelValidator\Test\Utility;
+namespace FHTeam\LaravelValidator\Tests\Utility;
 
 
 use Exception;
-use FHTeam\LaravelValidator\Test\TestBase;
+use FHTeam\LaravelValidator\Tests\TestBase;
 use FHTeam\LaravelValidator\Utility\Arr;
 
 /**

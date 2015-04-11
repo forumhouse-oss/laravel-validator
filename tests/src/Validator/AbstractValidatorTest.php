@@ -1,10 +1,10 @@
 <?php
 
-namespace FHTeam\LaravelValidator\Test\Validator;
+namespace FHTeam\LaravelValidator\Tests\Validator;
 
 use Exception;
-use FHTeam\LaravelValidator\Test\Fixture\AbstractValidatorFixture;
-use FHTeam\LaravelValidator\Test\TestBase;
+use FHTeam\LaravelValidator\Tests\Fixture\AbstractValidatorFixture;
+use FHTeam\LaravelValidator\Tests\TestBase;
 use FHTeam\LaravelValidator\Validator\ValidationException;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Validation\Factory;

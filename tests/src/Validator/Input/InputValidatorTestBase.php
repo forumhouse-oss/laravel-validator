@@ -1,8 +1,8 @@
 <?php
 
-namespace FHTeam\LaravelValidator\Test\Validator\Input;
+namespace FHTeam\LaravelValidator\Tests\Validator\Input;
 
-use FHTeam\LaravelValidator\Test\TestBase;
+use FHTeam\LaravelValidator\Tests\TestBase;
 use Illuminate\Contracts\Validation\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

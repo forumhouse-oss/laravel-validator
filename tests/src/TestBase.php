@@ -1,6 +1,6 @@
 <?php
 
-namespace FHTeam\LaravelValidator\Test;
+namespace FHTeam\LaravelValidator\Tests;
 
 use Exception;
 use Illuminate\Foundation\Application;

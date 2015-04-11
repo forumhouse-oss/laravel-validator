@@ -1,8 +1,8 @@
-<?php namespace FHTeam\LaravelValidator\Test\Rule\Json;
+<?php namespace FHTeam\LaravelValidator\Tests\Rule\Json;
 
 use FHTeam\LaravelValidator\Rule\Json\JsonValidationRule;
 use FHTeam\LaravelValidator\Rule\ValidationRuleInterface;
-use FHTeam\LaravelValidator\Test\TestBase;
+use FHTeam\LaravelValidator\Tests\TestBase;
 
 /**
  * Class JsonValidationRuleTest

@@ -1,8 +1,8 @@
-<?php namespace FHTeam\LaravelValidator\Test\Rule\Json;
+<?php namespace FHTeam\LaravelValidator\Tests\Rule\Json;
 
 use FHTeam\LaravelValidator\Rule\Json\JsonKeysPresent;
 use FHTeam\LaravelValidator\Rule\ValidationRuleInterface;
-use FHTeam\LaravelValidator\Test\TestBase;
+use FHTeam\LaravelValidator\Tests\TestBase;
 
 class JsonKeysPresentTest extends TestBase
 {

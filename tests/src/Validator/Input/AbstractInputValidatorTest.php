@@ -1,6 +1,6 @@
 <?php
 
-namespace FHTeam\LaravelValidator\Test\Validator\Input;
+namespace FHTeam\LaravelValidator\Tests\Validator\Input;
 
 use FHTeam\LaravelValidator\Validator\Input\AbstractInputValidator;
 use Illuminate\Container\Container;

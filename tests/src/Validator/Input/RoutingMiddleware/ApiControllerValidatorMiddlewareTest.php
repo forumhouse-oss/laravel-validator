@@ -1,7 +1,7 @@
-<?php namespace FHTeam\LaravelValidator\Test\Validator\Input\RoutingMiddleware;
+<?php namespace FHTeam\LaravelValidator\Tests\Validator\Input\RoutingMiddleware;
 
-use FHTeam\LaravelValidator\Test\Fixture\Input\ApiControllerValidatorMiddlewareFixture;
-use FHTeam\LaravelValidator\Test\Validator\Input\InputValidatorTestBase;
+use FHTeam\LaravelValidator\Tests\Fixture\Input\ApiControllerValidatorMiddlewareFixture;
+use FHTeam\LaravelValidator\Tests\Validator\Input\InputValidatorTestBase;
 use FHTeam\LaravelValidator\Validator\Input\RoutingMiddleware\ApiControllerValidatorMiddleware;
 use Illuminate\Contracts\Routing\Middleware;
 use Illuminate\Contracts\Routing\ResponseFactory;

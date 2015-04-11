@@ -1,9 +1,9 @@
-<?php namespace FHTeam\LaravelValidator\Test\Rule\Image;
+<?php namespace FHTeam\LaravelValidator\Tests\Rule\Image;
 
 use Exception;
 use FHTeam\LaravelValidator\Rule\Image\ImageDimensionValidationRule;
 use FHTeam\LaravelValidator\Rule\ValidationRuleInterface;
-use FHTeam\LaravelValidator\Test\TestBase;
+use FHTeam\LaravelValidator\Tests\TestBase;
 use stdClass;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 

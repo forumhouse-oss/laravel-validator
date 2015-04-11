@@ -1,9 +1,9 @@
 <?php
 
-namespace FHTeam\LaravelValidator\Test\Validator\Input;
+namespace FHTeam\LaravelValidator\Tests\Validator\Input;
 
 use Exception;
-use FHTeam\LaravelValidator\Test\Fixture\AbstractRedirectingInputValidatorFixture;
+use FHTeam\LaravelValidator\Tests\Fixture\AbstractRedirectingInputValidatorFixture;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Validation\Factory;
 use Illuminate\Http\RedirectResponse;

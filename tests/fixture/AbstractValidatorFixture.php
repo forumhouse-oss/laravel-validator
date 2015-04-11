@@ -1,6 +1,6 @@
 <?php
 
-namespace FHTeam\LaravelValidator\Test\Fixture;
+namespace FHTeam\LaravelValidator\Tests\Fixture;
 
 use FHTeam\LaravelValidator\Validator\AbstractValidator;
 use Illuminate\Validation\Validator;
