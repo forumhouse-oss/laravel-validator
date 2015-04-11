@@ -16,7 +16,8 @@ class JsonKeysPresentTest extends TestBase
      */
     public function setUp()
     {
-        $this->rule = new JsonKeysPresent();
+        parent::setUp();
+        $this->rule = $this->app->make(JsonKeysPresent::class);
     }
 
     public function testDeclaration()

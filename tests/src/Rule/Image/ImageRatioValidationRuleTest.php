@@ -1,7 +1,7 @@
 <?php namespace FHTeam\LaravelValidator\Test\Rule\Image;
 
 use Exception;
-use FHTeam\LaravelValidator\Rule\Image\ImageDimensionValidationRule;
+use FHTeam\LaravelValidator\Rule\Image\ImageRatioValidationRule;
 use FHTeam\LaravelValidator\Rule\ValidationRuleInterface;
 use FHTeam\LaravelValidator\Test\TestBase;
 use stdClass;
@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  *
  * @package FHTeam\LaravelValidator\Test\Rule\Image
  */
-class ImageDimensionValidationRuleTest extends TestBase
+class ImageRatioValidationRuleTest extends TestBase
 {
     /**
      * @var ValidationRuleInterface
@@ -30,7 +30,7 @@ class ImageDimensionValidationRuleTest extends TestBase
     public function setUp()
     {
         parent::setUp();
-        $this->rule = $this->app->make(ImageDimensionValidationRule::class);
+        $this->rule = $this->app->make(ImageRatioValidationRule::class);
         $this->tmpFile = tempnam(sys_get_temp_dir(), 'lv-test');
     }
 
@@ -48,17 +48,18 @@ class ImageDimensionValidationRuleTest extends TestBase
     {
         $this->setExpectedException(Exception::class);
         $this->rule->validate('image', new UploadedFile('', ''), []);
+        $this->rule->validate('image', new UploadedFile('', ''), [1]);
     }
 
     public function testParametersNotNumbers()
     {
         $this->setExpectedException(Exception::class);
-        $this->rule->validate('image', new UploadedFile('', ''), ['aa']);
+        $this->rule->validate('image', new UploadedFile('', ''), ['aa', 'bb']);
     }
 
     public function testValueIsNotUploadedFile()
     {
-        $this->assertFalse($this->rule->validate('image', new stdClass(), [1]));
+        $this->assertFalse($this->rule->validate('image', new stdClass(), [1, 1]));
     }
 
     public function testValueIsBadImageFile()
@@ -70,16 +71,13 @@ class ImageDimensionValidationRuleTest extends TestBase
     public function testValueOk()
     {
         $this->createImage(110, 110);
-        $this->assertTrue($this->rule->validate('image', new UploadedFile($this->tmpFile, 'test'), [5]));
-        $this->assertTrue($this->rule->validate('image', new UploadedFile($this->tmpFile, 'test'), [5, 110]));
+        $this->assertTrue($this->rule->validate('image', new UploadedFile($this->tmpFile, 'test'), [0.5, 2]));
     }
 
     public function testValueFail()
     {
         $this->createImage(110, 110);
-        $this->assertFalse($this->rule->validate('image', new UploadedFile($this->tmpFile, 'test'), [200]));
-        $this->assertFalse($this->rule->validate('image', new UploadedFile($this->tmpFile, 'test'), [200, 100]));
-        $this->assertFalse($this->rule->validate('image', new UploadedFile($this->tmpFile, 'test'), [200, 300]));
+        $this->assertFalse($this->rule->validate('image', new UploadedFile($this->tmpFile, 'test'), [1, 1]));
     }
 
     protected function createImage($width, $height)
