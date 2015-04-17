@@ -1,5 +1,6 @@
 <?php namespace FHTeam\LaravelValidator\Validator\Input\WhenResolved;
 
+use Exception;
 use FHTeam\LaravelValidator\Validator\Input\AbstractInputValidator;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\Validation\Factory;
@@ -17,6 +18,16 @@ use Illuminate\Support\Arr;
 class ApiControllerValidatorWhenResolved extends AbstractInputValidator implements ValidatesWhenResolved
 {
     /**
+     * Return rule names as errors on validation failure
+     */
+    const ERROR_FORMAT_RULES = "rules";
+
+    /**
+     * Return human readable messages on validation failure
+     */
+    const ERROR_FORMAT_MESSAGES = "messages";
+
+    /**
      * @var ResponseFactory
      */
     protected $responseFactory;
@@ -25,6 +36,11 @@ class ApiControllerValidatorWhenResolved extends AbstractInputValidator implemen
      * @var string Default key name in which to return a list of validation errors
      */
     protected $errorKeyName = 'validationErrors';
+
+    /**
+     * @var int Do we want to see rule names or human readable messages on validation failure?
+     */
+    protected $errorFormat = self::ERROR_FORMAT_RULES;
 
     /**
      * @param Factory         $validatorFactory
@@ -46,12 +62,26 @@ class ApiControllerValidatorWhenResolved extends AbstractInputValidator implemen
      * Handle an incoming request.
      *
      * @return null
+     * @throws Exception
      * @throws HttpResponseException
      */
     public function validate()
     {
         if (!$this->isThisValid()) {
-            $result = $this->makeResponse($this->getFailedRules());
+            $errorList = null;
+
+            switch ($this->errorFormat) {
+                case self::ERROR_FORMAT_RULES:
+                    $errorList = $this->getFailedRules();
+                    break;
+                case self::ERROR_FORMAT_MESSAGES:
+                    $errorList = $this->getMessageBag()->all();
+                    break;
+                default:
+                    throw new Exception("Unknown error format: {$this->errorFormat}");
+            }
+
+            $result = $this->makeResponse($errorList);
 
             throw new HttpResponseException($this->responseFactory->json($result));
         }
