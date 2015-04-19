@@ -34,6 +34,16 @@ class DatabaseTestBase extends TestCase
         );
     }
 
+    public function tearDown()
+    {
+        $this->artisan(
+            'migrate:reset',
+            [
+                '--database' => 'test'
+            ]
+        );
+    }
+
     protected function getEnvironmentSetUp($app)
     {
         parent::getEnvironmentSetUp($app);
