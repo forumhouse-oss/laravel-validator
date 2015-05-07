@@ -10,7 +10,7 @@ use FHTeam\LaravelValidator\Utility\Arr;
  *
  * @package FHTeam\LaravelValidator\Rule
  */
-class JsonKeysPresent extends AbstractValidationRule implements ValidationRuleInterface
+class JsonKeysPresentValidationRule extends AbstractValidationRule implements ValidationRuleInterface
 {
     public function validate($attribute, $value, array $parameters = [])
     {

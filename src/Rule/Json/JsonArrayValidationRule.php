@@ -9,7 +9,7 @@ use FHTeam\LaravelValidator\Rule\ValidationRuleInterface;
  *
  * @package FHTeam\LaravelValidator\Rule
  */
-class JsonArray extends AbstractValidationRule implements ValidationRuleInterface
+class JsonArrayValidationRule extends AbstractValidationRule implements ValidationRuleInterface
 {
     public function validate($attribute, $value, array $parameters = [])
     {

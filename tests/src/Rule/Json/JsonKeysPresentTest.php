@@ -1,6 +1,6 @@
 <?php namespace FHTeam\LaravelValidator\Tests\Rule\Json;
 
-use FHTeam\LaravelValidator\Rule\Json\JsonKeysPresent;
+use FHTeam\LaravelValidator\Rule\Json\JsonKeysPresentValidationRule;
 use FHTeam\LaravelValidator\Rule\ValidationRuleInterface;
 use FHTeam\LaravelValidator\Tests\TestBase;
 
@@ -17,7 +17,7 @@ class JsonKeysPresentTest extends TestBase
     public function setUp()
     {
         parent::setUp();
-        $this->rule = $this->app->make(JsonKeysPresent::class);
+        $this->rule = $this->app->make(JsonKeysPresentValidationRule::class);
     }
 
     public function testDeclaration()
