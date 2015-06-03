@@ -4,6 +4,9 @@ namespace FHTeam\LaravelValidator\Validator;
 
 use ArrayAccess;
 use Exception;
+use FHTeam\LaravelValidator\Engine\RuleParser\RuleParser;
+use FHTeam\LaravelValidator\Engine\RulePostProcessors\ArrayRulePostProcessor;
+use FHTeam\LaravelValidator\Engine\RulePostProcessors\RulePostProcessorInterface;
 use FHTeam\LaravelValidator\Utility\Arr;
 use FHTeam\LaravelValidator\Utility\ArrayDataStorage;
 use Illuminate\Contracts\Support\MessageProvider;
@@ -117,7 +120,7 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
     }
 
     /**
-     * Internal validation function to validate already serialized data.
+     * Public validation function to validate some object
      *
      * @param mixed $object Object to validate
      *
@@ -128,10 +131,29 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
         $objectData = $this->getObjectData($object);
         $validationGroup = $this->getState($object);
         $rules = Arr::mergeByCondition($this->rules, $validationGroup);
+
+        $ruleParser = new RuleParser();
+        $rules = $ruleParser->parse($rules, $this->templateReplacements);
         $rules = $this->preProcessRules($rules, $objectData);
 
         /** @var Validator $validator */
-        $validator = $this->validatorFactory->make($objectData, $rules);
+        $validator = $this->validatorFactory->make([], []);
+
+        $validatorCallables = [];
+        $rulePostProcessors = [];
+        $rulePostProcessors[] = new ArrayRulePostProcessor();
+
+        foreach ($rulePostProcessors as $processor) {
+            /** @var RulePostProcessorInterface $processor */
+            $validatorCallables = array_merge($validatorCallables, $processor->postProcessRules($rules));
+        }
+
+        $validator->setRules($rules);
+        $validator->setData($objectData);
+        foreach ($validatorCallables as $callable) {
+            call_user_func($callable, $validator);
+        }
+
         $this->setupValidator($validator);
         $this->validationPassed = !$validator->fails();
 
@@ -167,6 +189,8 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
     }
 
     /**
+     * Manually sets validation rules. This method may be called at any time before isThisValid()
+     *
      * @param array $rules
      */
     public function setRules(array $rules)
@@ -178,37 +202,12 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
      * Method is called to preprocess rules if required. By default it templatize them
      *
      * @param array $rules Rules to preprocess
-     * @param array $data  Data to be validated
+     * @param array $data  Data being validated
      *
      * @return array Preprocessed rules
      */
     public function preProcessRules(array $rules, array $data)
     {
-        // Making template replacements
-        foreach ($rules as $key => $text) {
-            if (empty($text)) {
-                continue;
-            }
-
-            $rulesArray = explode(
-                '|',
-                str_replace(
-                    array_keys($this->templateReplacements),
-                    array_values($this->templateReplacements),
-                    $text
-                )
-            );
-
-            foreach ($rulesArray as $ruleData) {
-                if ('#' !== $ruleData[0]) {
-                    continue;
-                    //TODO: extract converters and unset them
-                }
-            }
-
-            $rules[$key] = $rulesArray;
-        }
-
         return $rules;
     }
 
