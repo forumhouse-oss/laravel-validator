@@ -6,6 +6,7 @@ use ArrayAccess;
 use Exception;
 use FHTeam\LaravelValidator\Engine\RuleParser\RuleParser;
 use FHTeam\LaravelValidator\Engine\ValidatorFactory;
+use FHTeam\LaravelValidator\Rule\ValidationRuleRegistry;
 use FHTeam\LaravelValidator\Utility\Arr;
 use FHTeam\LaravelValidator\Utility\ArrayDataStorage;
 use Illuminate\Contracts\Support\MessageProvider;
@@ -37,6 +38,13 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
      * @var array
      */
     protected $rules = [];
+
+    /**
+     * @var array Custom validation rules. Each rule must be an array [$validationClosure, $replacerClosure]
+     *            suitable to be passed to Validator::extend() and Validator::replacer() respectively.
+     *            $replacerClosure can be null
+     */
+    protected $customRules = [];
 
     /**
      * @var string[]
@@ -141,6 +149,12 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
         $rules = $ruleParser->parse($rules, $this->templateReplacements);
         $rules = $this->preProcessRules($rules, $objectData);
 
+        //Registering custom validation rules
+        foreach ($this->customRules as $ruleName => $customRuleData) {
+            ValidationRuleRegistry::registerClosure($customRuleData[0], $customRuleData[1]);
+        }
+
+        //Creating validator
         $validatorFactory = new ValidatorFactory($this->validatorFactory);
         $validator = $validatorFactory->create($rules, $objectData);
         $validator->setCustomMessages(
