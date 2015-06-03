@@ -29,10 +29,9 @@ trait EloquentValidatingTrait
     public static function bootEloquentValidatingTrait()
     {
         // Calling Model::saving() and asking it to execute assertIsValid() before model is saved into database
-        forward_static_call(
-            [static::class, 'saving'],
-            [static::class, 'assertIsValid']
-        );
+        $savingCallable = [static::class, 'saving'];
+        $validationCallable = [static::class, 'assertIsValid'];
+        forward_static_call($savingCallable, $validationCallable);
     }
 
     /**
