@@ -5,13 +5,13 @@ namespace FHTeam\LaravelValidator\Validator;
 use ArrayAccess;
 use Exception;
 use FHTeam\LaravelValidator\Engine\RuleParser\RuleParser;
-use FHTeam\LaravelValidator\Engine\RulePostProcessors\ArrayRulePostProcessor;
-use FHTeam\LaravelValidator\Engine\RulePostProcessors\RulePostProcessorInterface;
+use FHTeam\LaravelValidator\Engine\ValidatorFactory;
 use FHTeam\LaravelValidator\Utility\Arr;
 use FHTeam\LaravelValidator\Utility\ArrayDataStorage;
 use Illuminate\Contracts\Support\MessageProvider;
 use Illuminate\Contracts\Validation\Factory;
 use Illuminate\Support\MessageBag;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Validator;
 use IteratorAggregate;
 
@@ -136,25 +136,16 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
         $rules = $ruleParser->parse($rules, $this->templateReplacements);
         $rules = $this->preProcessRules($rules, $objectData);
 
-        /** @var Validator $validator */
-        $validator = $this->validatorFactory->make([], []);
-
-        $validatorCallables = [];
-        $rulePostProcessors = [];
-        $rulePostProcessors[] = new ArrayRulePostProcessor();
-
-        foreach ($rulePostProcessors as $processor) {
-            /** @var RulePostProcessorInterface $processor */
-            $validatorCallables = array_merge($validatorCallables, $processor->postProcessRules($rules));
-        }
-
-        $validator->setRules($rules);
-        $validator->setData($objectData);
-        foreach ($validatorCallables as $callable) {
-            call_user_func($callable, $validator);
-        }
+        $validatorFactory = new ValidatorFactory($this->validatorFactory);
+        $validator = $validatorFactory->create($rules, $objectData);
 
         $this->setupValidator($validator);
+        $method_name = 'setupValidatorFor'.Str::studly($validationGroup);
+
+        if (method_exists($this, $method_name)) {
+            $this->$method_name($validator);
+        }
+
         $this->validationPassed = !$validator->fails();
 
         if ($this->validationPassed) {

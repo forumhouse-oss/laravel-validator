@@ -121,6 +121,14 @@ class AbstractValidatorTest extends TestBase
         $this->assertFalse($this->validator->isThisValid(['sometimes' => 2]));
     }
 
+    public function testSetupValidatorForGroupExecuted()
+    {
+        $this->validator->setRules(['other_group' => ['dummy' => '']]);
+        $this->validator->setGroup('other_group');
+        $this->assertTrue($this->validator->isThisValid(['sometimes_other' => 100]));
+        $this->assertFalse($this->validator->isThisValid(['sometimes_other' => 200]));
+    }
+
     public function testValidateRuleArraySyntax()
     {
         $this->validator->setRules(['group' => ['array_field' => 'numeric[]']]);

@@ -18,7 +18,10 @@ class AbstractValidatorFixture extends AbstractValidator
             'string' => 'required',
             'int' => 'required|numeric',
         ],
+        'other_group' => ['dummy']
     ];
+
+    protected $group = 'group';
 
     /**
      * @param $object
@@ -27,7 +30,15 @@ class AbstractValidatorFixture extends AbstractValidator
      */
     protected function getState($object)
     {
-        return 'group';
+        return $this->group;
+    }
+
+    /**
+     * @param string $group
+     */
+    public function setGroup($group)
+    {
+        $this->group = $group;
     }
 
     /**
@@ -46,6 +57,18 @@ class AbstractValidatorFixture extends AbstractValidator
         $validator->sometimes(
             'sometimes',
             'numeric|min:1|max:1',
+            function () {
+                return true;
+            }
+        );
+    }
+
+    public function setupValidatorForOtherGroup(Validator $validator)
+    {
+        parent::setupValidator($validator);
+        $validator->sometimes(
+            'sometimes_other',
+            'numeric|min:100|max:100',
             function () {
                 return true;
             }
