@@ -39,6 +39,11 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
     protected $rules = [];
 
     /**
+     * @var string[]
+     */
+    protected $customValidationMessages = [];
+
+    /**
      * @var ArrayDataStorage
      */
     protected $dataStorage;
@@ -138,6 +143,9 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
 
         $validatorFactory = new ValidatorFactory($this->validatorFactory);
         $validator = $validatorFactory->create($rules, $objectData);
+        $validator->setCustomMessages(
+            $this->preProcessValidationErrorMessages($this->customValidationMessages, $rules, $objectData)
+        );
 
         $this->setupValidator($validator);
         $method_name = 'setupValidatorFor'.Str::studly($validationGroup);
@@ -190,7 +198,7 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
     }
 
     /**
-     * Method is called to preprocess rules if required. By default it templatize them
+     * Method is called to preprocess rules if required.
      *
      * @param array $rules Rules to preprocess
      * @param array $data  Data being validated
@@ -200,6 +208,20 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
     public function preProcessRules(array $rules, array $data)
     {
         return $rules;
+    }
+
+    /**
+     * Method is called to preprocess validation error messages if required
+     *
+     * @param string[] $messages
+     * @param array    $rules
+     * @param array    $data
+     *
+     * @return string[]
+     */
+    public function preProcessValidationErrorMessages(array $messages, array $rules, array $data)
+    {
+        return $messages;
     }
 
     /**
