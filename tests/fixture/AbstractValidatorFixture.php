@@ -13,7 +13,7 @@ use Illuminate\Validation\Validator;
 class AbstractValidatorFixture extends AbstractValidator
 {
     protected $rules = [
-        'unused' => ['dummy' => 'required'],
+        'empty' => [],
         'group' => [
             'string' => 'required',
             'int' => 'required|numeric',

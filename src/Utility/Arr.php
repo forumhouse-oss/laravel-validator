@@ -71,7 +71,7 @@ class Arr extends \Illuminate\Support\Arr
             }
         }
 
-        if (empty($result) && !$allowEmpty) {
+        if (empty($result) && !$allowEmpty && !isset($data[$condition])) {
             throw new Exception("Nothing matched condition '$condition' among ".json_encode(array_keys($data)));
         }
 

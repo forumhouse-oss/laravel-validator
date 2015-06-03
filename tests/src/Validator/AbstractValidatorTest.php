@@ -136,4 +136,17 @@ class AbstractValidatorTest extends TestBase
         $this->assertFalse($this->validator->isThisValid(['array_field' => '1']));
         $this->assertFalse($this->validator->isThisValid(['array_field' => ['TEST']]));
     }
+
+    public function testInvalidValidationGroupSpecified()
+    {
+        $this->validator->setGroup('inexistent_group');
+        $this->setExpectedException(Exception::class);
+        $this->validator->isThisValid([]);
+    }
+
+    public function testEmptyValidationGroupAllowed()
+    {
+        $this->validator->setGroup('empty');
+        $this->assertTrue($this->validator->isThisValid([]));
+    }
 }
