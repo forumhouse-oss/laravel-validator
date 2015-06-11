@@ -4,11 +4,15 @@ namespace FHTeam\LaravelValidator\Validator;
 
 use ArrayAccess;
 use Exception;
+use FHTeam\LaravelValidator\Engine\RuleParser\RuleParser;
+use FHTeam\LaravelValidator\Engine\ValidatorFactory;
+use FHTeam\LaravelValidator\Rule\ValidationRuleRegistry;
 use FHTeam\LaravelValidator\Utility\Arr;
 use FHTeam\LaravelValidator\Utility\ArrayDataStorage;
 use Illuminate\Contracts\Support\MessageProvider;
 use Illuminate\Contracts\Validation\Factory;
 use Illuminate\Support\MessageBag;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Validator;
 use IteratorAggregate;
 
@@ -34,6 +38,18 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
      * @var array
      */
     protected $rules = [];
+
+    /**
+     * @var array Custom validation rules. Each rule must be an array [$validationClosure, $replacerClosure]
+     *            suitable to be passed to Validator::extend() and Validator::replacer() respectively.
+     *            $replacerClosure can be null
+     */
+    protected $customRules = [];
+
+    /**
+     * @var string[]
+     */
+    protected $customValidationMessages = [];
 
     /**
      * @var ArrayDataStorage
@@ -117,7 +133,7 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
     }
 
     /**
-     * Internal validation function to validate already serialized data.
+     * Public validation function to validate some object
      *
      * @param mixed $object Object to validate
      *
@@ -128,11 +144,30 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
         $objectData = $this->getObjectData($object);
         $validationGroup = $this->getState($object);
         $rules = Arr::mergeByCondition($this->rules, $validationGroup);
+
+        $ruleParser = new RuleParser();
+        $rules = $ruleParser->parse($rules, $this->templateReplacements);
         $rules = $this->preProcessRules($rules, $objectData);
 
-        /** @var Validator $validator */
-        $validator = $this->validatorFactory->make($objectData, $rules);
+        //Registering custom validation rules
+        foreach ($this->customRules as $ruleName => $customRuleData) {
+            ValidationRuleRegistry::registerClosure($customRuleData[0], $customRuleData[1]);
+        }
+
+        //Creating validator
+        $validatorFactory = new ValidatorFactory($this->validatorFactory);
+        $validator = $validatorFactory->create($rules, $objectData);
+        $validator->setCustomMessages(
+            $this->preProcessValidationErrorMessages($this->customValidationMessages, $rules, $objectData)
+        );
+
         $this->setupValidator($validator);
+        $method_name = 'setupValidatorFor'.Str::studly($validationGroup);
+
+        if (method_exists($this, $method_name)) {
+            $this->$method_name($validator);
+        }
+
         $this->validationPassed = !$validator->fails();
 
         if ($this->validationPassed) {
@@ -167,6 +202,8 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
     }
 
     /**
+     * Manually sets validation rules. This method may be called at any time before isThisValid()
+     *
      * @param array $rules
      */
     public function setRules(array $rules)
@@ -175,41 +212,30 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
     }
 
     /**
-     * Method is called to preprocess rules if required. By default it templatize them
+     * Method is called to preprocess rules if required.
      *
      * @param array $rules Rules to preprocess
-     * @param array $data  Data to be validated
+     * @param array $data  Data being validated
      *
      * @return array Preprocessed rules
      */
     public function preProcessRules(array $rules, array $data)
     {
-        // Making template replacements
-        foreach ($rules as $key => $text) {
-            if (empty($text)) {
-                continue;
-            }
-
-            $rulesArray = explode(
-                '|',
-                str_replace(
-                    array_keys($this->templateReplacements),
-                    array_values($this->templateReplacements),
-                    $text
-                )
-            );
-
-            foreach ($rulesArray as $ruleData) {
-                if ('#' !== $ruleData[0]) {
-                    continue;
-                    //TODO: extract converters and unset them
-                }
-            }
-
-            $rules[$key] = $rulesArray;
-        }
-
         return $rules;
+    }
+
+    /**
+     * Method is called to preprocess validation error messages if required
+     *
+     * @param string[] $messages
+     * @param array    $rules
+     * @param array    $data
+     *
+     * @return string[]
+     */
+    public function preProcessValidationErrorMessages(array $messages, array $rules, array $data)
+    {
+        return $messages;
     }
 
     /**

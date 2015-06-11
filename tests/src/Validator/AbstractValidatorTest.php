@@ -120,4 +120,33 @@ class AbstractValidatorTest extends TestBase
         $this->assertTrue($this->validator->isThisValid(['sometimes' => 1]));
         $this->assertFalse($this->validator->isThisValid(['sometimes' => 2]));
     }
+
+    public function testSetupValidatorForGroupExecuted()
+    {
+        $this->validator->setRules(['other_group' => ['dummy' => '']]);
+        $this->validator->setGroup('other_group');
+        $this->assertTrue($this->validator->isThisValid(['sometimes_other' => 100]));
+        $this->assertFalse($this->validator->isThisValid(['sometimes_other' => 200]));
+    }
+
+    public function testValidateRuleArraySyntax()
+    {
+        $this->validator->setRules(['group' => ['array_field' => 'numeric[]']]);
+        $this->assertTrue($this->validator->isThisValid(['array_field' => [1]]));
+        $this->assertFalse($this->validator->isThisValid(['array_field' => '1']));
+        $this->assertFalse($this->validator->isThisValid(['array_field' => ['TEST']]));
+    }
+
+    public function testInvalidValidationGroupSpecified()
+    {
+        $this->validator->setGroup('inexistent_group');
+        $this->setExpectedException(Exception::class);
+        $this->validator->isThisValid([]);
+    }
+
+    public function testEmptyValidationGroupAllowed()
+    {
+        $this->validator->setGroup('empty');
+        $this->assertTrue($this->validator->isThisValid([]));
+    }
 }

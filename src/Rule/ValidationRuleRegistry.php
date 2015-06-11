@@ -2,6 +2,7 @@
 
 namespace FHTeam\LaravelValidator\Rule;
 
+use Closure;
 use Exception;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Validation\Factory;
@@ -37,11 +38,29 @@ class ValidationRuleRegistry
 
         static::$registry[$ruleName] = $className;
 
-        /** @var Factory $validator */
-        $validator = Application::getInstance()->make(Factory::class);
+        /** @var Factory $validatorFactory */
+        $validatorFactory = Application::getInstance()->make(Factory::class);
 
-        $validator->extend($ruleName, $className.'@validate');
-        $validator->replacer($ruleName, $className.'@replace');
+        $validatorFactory->extend($ruleName, $className.'@validate');
+        $validatorFactory->replacer($ruleName, $className.'@replace');
+    }
+
+    /**
+     * Registers provided closure as a validation rule. Useful for quick & dirty validation
+     *
+     * @param string              $ruleName
+     * @param string|Closure      $validateFunction
+     * @param string|Closure|null $replaceFunction
+     */
+    public static function registerClosure($ruleName, $validateFunction, $replaceFunction = null)
+    {
+        /** @var Factory $validatorFactory */
+        $validatorFactory = Application::getInstance()->make(Factory::class);
+
+        $validatorFactory->extend($ruleName, $validateFunction);
+        if (null !== $replaceFunction) {
+            $validatorFactory->replacer($ruleName, $replaceFunction);
+        }
     }
 
     /**
