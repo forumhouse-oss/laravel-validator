@@ -107,11 +107,17 @@ class AbstractInputValidator extends AbstractValidator implements ArrayAccess, I
     /**
      * Returns the current method of current controller
      *
-     * @return mixed
+     * @return null|string
      */
     protected function currentRouteMethod()
     {
-        return explode('@', $this->router->currentRouteAction())[1];
+        $currentRouteAction = $this->router->currentRouteAction();
+
+        if (null === $currentRouteAction) {
+            return null;
+        }
+
+        return explode('@', $currentRouteAction)[1];
     }
 
     /**
