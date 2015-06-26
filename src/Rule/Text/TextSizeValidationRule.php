@@ -28,4 +28,14 @@ class TextSizeValidationRule extends AbstractValidationRule implements Validatio
 
         return true;
     }
+
+    public function replace($message, $attribute, $rule, array $parameters = [])
+    {
+        $message = str_replace(':min', $parameters[0], $message);
+        if (isset($parameters[1])) {
+            $message = str_replace(':max', $parameters[1], $message);
+        }
+
+        return $message;
+    }
 }
