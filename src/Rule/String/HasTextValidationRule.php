@@ -8,7 +8,7 @@ use FHTeam\LaravelValidator\Rule\ValidationRuleInterface;
  *
  * @package FHTeam\LaravelValidator\Rule
  */
-class TextNotEmptyStringValidationRule extends AbstractValidationRule implements ValidationRuleInterface
+class HasTextValidationRule extends AbstractValidationRule implements ValidationRuleInterface
 {
     public function validate($attribute, $value, array $parameters = [])
     {
