@@ -1,4 +1,4 @@
-<?php namespace FHTeam\LaravelValidator\Rule\Json;
+<?php namespace FHTeam\LaravelValidator\Rule\Text;
 
 use Exception;
 use FHTeam\LaravelValidator\Rule\AbstractValidationRule;

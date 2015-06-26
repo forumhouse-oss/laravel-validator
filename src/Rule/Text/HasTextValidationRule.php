@@ -1,4 +1,4 @@
-<?php namespace FHTeam\LaravelValidator\Rule\Json;
+<?php namespace FHTeam\LaravelValidator\Rule\Text;
 
 use FHTeam\LaravelValidator\Rule\AbstractValidationRule;
 use FHTeam\LaravelValidator\Rule\ValidationRuleInterface;
