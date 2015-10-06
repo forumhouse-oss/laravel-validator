@@ -9,6 +9,7 @@ use Illuminate\Contracts\Validation\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Arr;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class ApiControllerValidatorMiddleware
@@ -41,6 +42,11 @@ class ApiControllerValidatorMiddleware extends AbstractInputValidator implements
      * @var int Do we want to see rule names or human readable messages on validation failure?
      */
     protected $errorFormat = self::ERROR_FORMAT_RULES;
+
+    /**
+     * @var int Default HTTP status for validator error response
+     */
+    protected $errorResponseStatus = Response::HTTP_OK;
 
     /**
      * @param Factory         $validatorFactory
@@ -85,7 +91,7 @@ class ApiControllerValidatorMiddleware extends AbstractInputValidator implements
 
             $result = $this->makeResponse($errorList);
 
-            return $this->responseFactory->json($result);
+            return $this->responseFactory->json($result, $this->errorResponseStatus);
         }
 
         return null;
