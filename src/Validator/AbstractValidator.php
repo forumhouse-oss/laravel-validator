@@ -79,6 +79,11 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
     protected $failedRules;
 
     /**
+     * @var string Last known state of the object, being validated
+     */
+    protected $lastState;
+
+    /**
      * @param $object
      *
      * @return string
@@ -142,8 +147,8 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
     public function isThisValid($object = null)
     {
         $objectData = $this->getObjectData($object);
-        $validationGroup = $this->getState($object);
-        $rules = Arr::mergeByCondition($this->rules, $validationGroup);
+        $this->lastState = $this->getState($object);
+        $rules = Arr::mergeByCondition($this->rules, $this->lastState);
 
         $ruleParser = new RuleParser();
         $rules = $ruleParser->parse($rules, $this->templateReplacements);
@@ -162,7 +167,7 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
         );
 
         $this->setupValidator($validator);
-        $method_name = 'setupValidatorFor'.Str::studly($validationGroup);
+        $method_name = 'setupValidatorFor'.Str::studly($this->lastState);
 
         if (method_exists($this, $method_name)) {
             $this->$method_name($validator);
@@ -261,6 +266,14 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
     public function getMessageBag()
     {
         return $this->failedMessages;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastState()
+    {
+        return $this->lastState;
     }
 
     /**
