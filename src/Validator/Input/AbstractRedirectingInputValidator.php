@@ -153,12 +153,21 @@ class AbstractRedirectingInputValidator extends AbstractInputValidator
     protected function fillParameters(array $routeParams)
     {
         foreach ($routeParams as $key => $value) {
-            if ($value[0] == ':') {
-                $routeParams[$key] = $this->request->input(substr($value, 1));
+            if (strlen($value) < 2) {
+                continue;
             }
 
-            if ($value[0] == '#') {
-                $routeParams[$key] = $this->router->input(substr($value, 1));
+            $firstChar = $value[0];
+            $paramName = substr($value, 1);
+
+            if ((':' == $firstChar) && $this->request->input($paramName)) {
+                $routeParams[$key] = $this->request->input($paramName);
+                continue;
+            }
+
+            if (('#' == $firstChar) && $this->router->input($paramName)) {
+                $routeParams[$key] = $this->router->input($paramName);
+                continue;
             }
         }
 
