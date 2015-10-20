@@ -160,11 +160,11 @@ class AbstractRedirectingInputValidator extends AbstractInputValidator
             $firstChar = $value[0];
             $paramName = substr($value, 1);
 
-            if (($firstChar == ':') && $this->request->has($paramName)) {
+            if (($firstChar == ':') && $this->request->input($paramName)) {
                 $routeParams[$key] = $this->request->input($paramName);
             }
 
-            if (($firstChar == '#') && $this->router->has($paramName)) {
+            if (($firstChar == '#') && $this->router->input($paramName)) {
                 $routeParams[$key] = $this->router->input($paramName);
             }
         }
