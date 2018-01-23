@@ -49,7 +49,7 @@ class ArrayRulePostProcessor implements RulePostProcessorInterface
                 }
 
                 $postProcessors[] = function (Validator $validator) use ($attribute, $ruleName, $ruleParams) {
-                    $validator->each($attribute, [$ruleName.':'.implode(', ', $ruleParams)]);
+                    $validator->setRules([$attribute => [$ruleName.':'.implode(', ', $ruleParams)]])->validate();
                 };
             }
         }
