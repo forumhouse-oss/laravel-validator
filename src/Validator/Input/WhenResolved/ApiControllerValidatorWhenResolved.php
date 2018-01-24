@@ -5,7 +5,7 @@ use FHTeam\LaravelValidator\Validator\Input\AbstractInputValidator;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\Validation\Factory;
 use Illuminate\Contracts\Validation\ValidatesWhenResolved;
-use Illuminate\Http\Exception\HttpResponseException;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Arr;

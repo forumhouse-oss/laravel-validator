@@ -3,7 +3,7 @@
 use FHTeam\LaravelValidator\Validator\Input\AbstractRedirectingInputValidator;
 use Illuminate\Contracts\Validation\Factory;
 use Illuminate\Contracts\Validation\ValidatesWhenResolved;
-use Illuminate\Http\Exception\HttpResponseException;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Routing\Router;
