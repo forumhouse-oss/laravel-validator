@@ -71,7 +71,7 @@ class ApiControllerValidatorWhenResolved extends AbstractInputValidator implemen
      * @throws Exception
      * @throws HttpResponseException
      */
-    public function validate()
+    public function validateResolved()
     {
         if (!$this->isThisValid()) {
             $errorList = null;

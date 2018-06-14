@@ -31,7 +31,7 @@ class FrontendControllerValidatorWhenResolved extends AbstractRedirectingInputVa
      *
      * @return mixed
      */
-    public function validate()
+    public function validateResolved()
     {
         if (!$this->isThisValid()) {
             throw new HttpResponseException($this->getRedirect());
