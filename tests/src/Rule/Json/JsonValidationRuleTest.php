@@ -19,7 +19,7 @@ class JsonValidationRuleTest extends TestBase
     /**
      *
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->rule = $this->app->make(JsonValidationRule::class);

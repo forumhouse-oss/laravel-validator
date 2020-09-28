@@ -18,7 +18,7 @@ class AbstractRedirectingInputValidatorTest extends InputValidatorTestBase
     /**
      *
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
     }

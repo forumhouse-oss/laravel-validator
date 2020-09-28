@@ -16,11 +16,11 @@ use FHTeam\LaravelValidator\Utility\Arr;
 class ArrTest extends TestBase
 {
     protected $testData = [
-        '*' => [
+        '*'                      => [
             'sharedKey1' => 'sharedValue1',
             'sharedKey2' => 'sharedValue2',
         ],
-        'masterKey1' => [
+        'masterKey1'             => [
             'MasterKey11' => 'MasterKeyValue11',
             'MasterKey12' => 'MasterKeyValue12',
         ],
@@ -55,15 +55,18 @@ class ArrTest extends TestBase
             'sharedKey2' => 'sharedValue2',
         ];
 
-        $this->setExpectedException(Exception::class);
-        Arr::mergeByCondition($expected, 'absent');
+        $this->handleExceptions([Exception::class]);
+        try {
+            Arr::mergeByCondition($expected, 'absent');
+        } catch (\Exception $e) {
+        }
     }
 
     public function testMergeByConditionSimple()
     {
         $expected = [
-            'sharedKey1' => 'sharedValue1',
-            'sharedKey2' => 'sharedValue2',
+            'sharedKey1'  => 'sharedValue1',
+            'sharedKey2'  => 'sharedValue2',
             'MasterKey11' => 'MasterKeyValue11',
             'MasterKey12' => 'MasterKeyValue12',
         ];
@@ -77,8 +80,8 @@ class ArrTest extends TestBase
     public function testMergeByConditionComplex1()
     {
         $expected = [
-            'sharedKey1' => 'sharedValue1',
-            'sharedKey2' => 'sharedValue2',
+            'sharedKey1'   => 'sharedValue1',
+            'sharedKey2'   => 'sharedValue2',
             'MasterKey231' => 'MasterKeyValue231',
             'MasterKey232' => 'MasterKeyValue232',
         ];

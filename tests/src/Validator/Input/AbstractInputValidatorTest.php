@@ -17,7 +17,7 @@ class AbstractInputValidatorTest extends InputValidatorTestBase
 
     protected $dataHeader = ['headerKey1' => 'headerValue1', 'headerKey2' => 'headerValue2'];
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

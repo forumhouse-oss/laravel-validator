@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  */
 class FrontendControllerValidatorMiddlewareTest extends InputValidatorTestBase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->setCurrentGroup('group');

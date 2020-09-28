@@ -67,11 +67,11 @@ class TestBase extends TestCase
     {
         return [
             'Illuminate\Foundation\Providers\ConsoleSupportServiceProvider',
-            'Illuminate\Routing\ControllerServiceProvider',
+//            'Illuminate\Routing\ControllerServiceProvider',
             'Illuminate\Cookie\CookieServiceProvider',
             'Illuminate\Database\DatabaseServiceProvider',
             'Illuminate\Filesystem\FilesystemServiceProvider',
-            'Orchestra\Database\MigrationServiceProvider',
+//            'Orchestra\Database\MigrationServiceProvider',
             'Illuminate\Pipeline\PipelineServiceProvider',
             'Illuminate\Session\SessionServiceProvider',
             'Illuminate\Translation\TranslationServiceProvider',

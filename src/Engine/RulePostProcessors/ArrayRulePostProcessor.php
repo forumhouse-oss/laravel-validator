@@ -3,6 +3,7 @@
 namespace FHTeam\LaravelValidator\Engine\RulePostProcessors;
 
 use Exception;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Validator;
 
@@ -25,7 +26,7 @@ class ArrayRulePostProcessor implements RulePostProcessorInterface
         $hasArrayRule = false;
         foreach ($rules as $attribute => &$attributeRules) {
             foreach ($attributeRules as $ruleIndex => &$ruleData) {
-                list($ruleName, $ruleParams) = $this->parseRule($ruleData);
+                [$ruleName, $ruleParams] = $this->parseRule($ruleData);
 
                 if ('array' == $ruleName) {
                     $hasArrayRule = true;
@@ -82,7 +83,7 @@ class ArrayRulePostProcessor implements RulePostProcessorInterface
      */
     protected function parseArrayRule(array $rules)
     {
-        return [studly_case(trim(array_get($rules, 0))), array_slice($rules, 1)];
+        return [Str::studly(trim(Arr::get($rules, 0))), array_slice($rules, 1)];
     }
 
     /**
@@ -100,12 +101,12 @@ class ArrayRulePostProcessor implements RulePostProcessorInterface
         // easy {rule}:{parameters} formatting convention. For instance the
         // rule "Max:3" states that the value may only be three letters.
         if (strpos($rules, ':') !== false) {
-            list($rules, $parameter) = explode(':', $rules, 2);
+            [$rules, $parameter] = explode(':', $rules, 2);
 
             $parameters = $this->parseParameters($rules, $parameter);
         }
 
-        return [studly_case(trim($rules)), $parameters];
+        return [Str::studly(trim($rules)), $parameters];
     }
 
     /**

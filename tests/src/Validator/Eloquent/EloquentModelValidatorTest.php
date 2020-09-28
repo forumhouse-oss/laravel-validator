@@ -17,7 +17,7 @@ class EloquentModelValidatorTest extends DatabaseTestBase
      */
     protected $model;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         Bear::$validateBeforeSaving = true;
@@ -38,7 +38,10 @@ class EloquentModelValidatorTest extends DatabaseTestBase
         $this->model->name = 'Valid bear';
         $this->model->type = 'XXX PornoStar Bear';
         $this->model->danger_level = "XXX";
-        $this->setExpectedException(ValidationException::class);
-        $this->model->save();
+        $this->handleExceptions([ValidationException::class]);
+        try {
+            $this->model->save();
+        } catch (\Exception $e) {
+        }
     }
 }

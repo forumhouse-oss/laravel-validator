@@ -21,7 +21,7 @@ class ArrayDataStorageTest extends TestBase
     /**
      *
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->storage = new ArrayDataStorage();
@@ -106,8 +106,11 @@ class ArrayDataStorageTest extends TestBase
     public function testArrayDataNotExistsException()
     {
         $this->storage->setKeyNormalizer(ArrayDataStorage::KEY_CASE_NO_CHANGE);
-        $this->setExpectedException(Exception::class);
-        $this->storage->getItem('testItem1');
+        $this->handleExceptions([Exception::class]);
+        try {
+            $this->storage->getItem('testItem1');
+        } catch (\Exception $e) {
+        }
     }
 
     /**
@@ -116,9 +119,12 @@ class ArrayDataStorageTest extends TestBase
     public function testKeyNotExists()
     {
         $this->storage->setKeyNormalizer(ArrayDataStorage::KEY_CASE_NO_CHANGE);
-        $this->setExpectedException(Exception::class);
-        $this->storage->setItem('testItem1', 'testValue1');
-        $this->storage->getItem('testItem2');
+        $this->handleExceptions([Exception::class]);
+        try {
+            $this->storage->setItem('testItem1', 'testValue1');
+            $this->storage->getItem('testItem2');
+        } catch (\Exception $e) {
+        }
     }
 
     /**
@@ -180,11 +186,14 @@ class ArrayDataStorageTest extends TestBase
         $data = ['testItem1' => 'testValue1', 'testItem2' => 'testValue2', 'testItem3' => 'testValue3'];
         $this->storage->setItems($data);
 
-        $this->setExpectedException(Exception::class);
-        $this->assertEquals(
-            ['testItem3' => 'testValue3'],
-            $this->storage->getOnly(['testItem3', 'testItem4'], true, true)
-        );
+        $this->handleExceptions([Exception::class]);
+        try {
+            $this->assertEquals(
+                ['testItem3' => 'testValue3'],
+                $this->storage->getOnly(['testItem3', 'testItem4'], true, true)
+            );
+        } catch (\Exception $e) {
+        }
     }
 
     /**
@@ -249,7 +258,10 @@ class ArrayDataStorageTest extends TestBase
     public function testSetKeyNormalizerException()
     {
         $this->storage->setItems(['testItem1' => 'testValue1', 'testItem2' => 'testValue2']);
-        $this->setExpectedException(Exception::class);
-        $this->storage->setKeyNormalizer(ArrayDataStorage::KEY_CASE_NO_CHANGE);
+        $this->handleExceptions([Exception::class]);
+        try {
+            $this->storage->setKeyNormalizer(ArrayDataStorage::KEY_CASE_NO_CHANGE);
+        } catch (\Exception $e) {
+        }
     }
 }

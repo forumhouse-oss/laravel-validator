@@ -6,3 +6,4 @@ Thumbs.db
 /vendor
 composer.lock
 _ide_helper.php
+.phpunit.result.cache

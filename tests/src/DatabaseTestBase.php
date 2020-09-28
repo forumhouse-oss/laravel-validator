@@ -10,7 +10,7 @@ class DatabaseTestBase extends TestCase
 {
     protected $migrationsPath = '../fixture/Database/Migrations';
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -34,7 +34,7 @@ class DatabaseTestBase extends TestCase
         );
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->artisan(
             'migrate:reset',

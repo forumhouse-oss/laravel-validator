@@ -14,7 +14,7 @@ use Illuminate\Http\JsonResponse;
  */
 class ApiControllerValidatorMiddlewareTest extends InputValidatorTestBase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->setCurrentGroup('group');

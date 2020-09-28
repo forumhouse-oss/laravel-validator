@@ -27,14 +27,14 @@ class ImageRatioValidationRuleTest extends TestBase
     /**
      *
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->rule = $this->app->make(ImageRatioValidationRule::class);
         $this->tmpFile = tempnam(sys_get_temp_dir(), 'lv-test');
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unlink($this->tmpFile);
     }
@@ -46,15 +46,21 @@ class ImageRatioValidationRuleTest extends TestBase
 
     public function testNoParameters()
     {
-        $this->setExpectedException(Exception::class);
-        $this->rule->validate('image', new UploadedFile('', ''), []);
-        $this->rule->validate('image', new UploadedFile('', ''), [1]);
+        $this->handleExceptions([Exception::class]);
+        try {
+            $this->rule->validate('image', new UploadedFile('', ''), []);
+            $this->rule->validate('image', new UploadedFile('', ''), [1]);
+        } catch (\Exception $e) {
+        }
     }
 
     public function testParametersNotNumbers()
     {
-        $this->setExpectedException(Exception::class);
-        $this->rule->validate('image', new UploadedFile('', ''), ['aa', 'bb']);
+        $this->handleExceptions([Exception::class]);
+        try {
+            $this->rule->validate('image', new UploadedFile('', ''), ['aa', 'bb']);
+        } catch (\Exception $e) {
+        }
     }
 
     public function testValueIsNotUploadedFile()
@@ -64,8 +70,11 @@ class ImageRatioValidationRuleTest extends TestBase
 
     public function testValueIsBadImageFile()
     {
-        $this->setExpectedException(Exception::class);
-        $this->assertFalse($this->rule->validate('image', new UploadedFile($this->tmpFile, 'test'), ['aa']));
+        $this->handleExceptions([Exception::class]);
+        try {
+            $this->assertFalse($this->rule->validate('image', new UploadedFile($this->tmpFile, 'test'), ['aa']));
+        } catch (\Exception $e) {
+        }
     }
 
     public function testValueOk()

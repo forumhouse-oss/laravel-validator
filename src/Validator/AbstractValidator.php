@@ -146,9 +146,6 @@ abstract class AbstractValidator implements MessageProvider, ArrayAccess, Iterat
      */
     public function isThisValid($object = null)
     {
-        if ('cli' === PHP_SAPI && env('APP_ENV') !== 'testing') {
-            return true;
-        }
         $objectData = $this->getObjectData($object);
         $this->lastState = $this->getState($object);
         $rules = Arr::mergeByCondition($this->rules, $this->lastState);
