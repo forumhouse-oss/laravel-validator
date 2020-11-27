@@ -46,7 +46,7 @@ class ArrayRulePostProcessor implements RulePostProcessorInterface
                 if ($hasArrayRule) {
                     unset($attributeRules[$ruleIndex]);
                 } else {
-                    $ruleData = ['array', []];
+                    $ruleData = ['array'];
                 }
 
                 $postProcessors[] = function (Validator $validator) use ($attribute, $ruleName, $ruleParams) {
